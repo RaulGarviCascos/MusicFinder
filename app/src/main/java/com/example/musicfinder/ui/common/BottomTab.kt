@@ -41,20 +41,19 @@ fun BottomTab(isListen:Boolean , isList:Boolean) {
     var isList = remember { mutableStateOf(isList) }
     Box(
         modifier = Modifier
-            .fillMaxSize() // Ocupa toda la pantalla
+            .fillMaxSize()
     ) {
         Box(
             modifier = Modifier
-                .fillMaxWidth() // Asegura que ocupa todo el ancho
-                .background(Color(red = 55, green = 53, blue = 66)) // Fondo del Box
-                .align(Alignment.BottomCenter) // Alinea en la parte inferior
+                .fillMaxWidth()
+                .background(Color(red = 55, green = 53, blue = 66))
+                .align(Alignment.BottomCenter)
 
         ) {
             Row(
-                modifier = Modifier.fillMaxWidth(), // Hace que los botones ocupen todo el ancho
-                horizontalArrangement = Arrangement.SpaceEvenly // Espaciado uniforme entre botones
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceEvenly
             ) {
-                // Contenido dentro del Box
                 ButtonTabBar(isThis = isListen.value, icon_name = R.drawable.ic_microphone, label = "Listen", onClick = {
                     isList.value = false
                     isListen.value = true

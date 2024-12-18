@@ -39,19 +39,12 @@ fun MainScreen() {
         }
 
         TopBar()
-
-        // Imagen de fondo
-
         Column(
             modifier = Modifier
-                .fillMaxSize()
-                .padding(16.dp),
+                .fillMaxSize(),
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center
         ) {
-            Spacer(modifier = Modifier.height(40.dp))
-
-            // Botón de Reconocimiento
             Button(
                 onClick = {isToggled.value = !isToggled.value},
                 modifier = Modifier
@@ -63,7 +56,7 @@ fun MainScreen() {
                 Image(
                     painter = painterResource(id = R.drawable.ic_button_finder), // Tu imagen personalizada
                     contentDescription = "Icono personalizado",
-                    modifier = Modifier.size(200.dp) // Tamaño del icono
+                    modifier = Modifier.size(200.dp)
                 )
             }
         }
@@ -81,9 +74,9 @@ fun MainScreen() {
                     color = Color.Cyan,
                     fontWeight =  FontWeight.Bold,
                     shadow = Shadow(
-                        color = Color.Black, // Color de la sombra
-                        offset = Offset(-4f, 4f), // Desplazamiento de la sombra
-                        blurRadius = 2f // Difuminado de la sombra
+                        color = Color.Black,
+                        offset = Offset(-4f, 4f),
+                        blurRadius = 2f
                     ))
             )
         }
@@ -96,6 +89,5 @@ fun MainScreen() {
 @Preview(showBackground = true)
 @Composable
 fun PreviewScreen(){
-
     MainScreen()
 }
