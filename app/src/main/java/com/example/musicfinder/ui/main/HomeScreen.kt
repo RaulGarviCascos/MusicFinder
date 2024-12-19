@@ -28,85 +28,97 @@ import com.example.musicfinder.R
 import com.example.musicfinder.ui.common.BottomTab
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.NavHost
+import com.example.musicfinder.ui.common.BottomTab
 import com.example.musicfinder.ui.navigation.AppNavigation
+import com.example.musicfinder.ui.navigation.AppScreens
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
-fun MainScreen(navController: NavController) {
-    val currentTab = remember { mutableStateOf("main") } // Estado para la pestaña activa
-    Scaffold {
-        MainBody(navController)
-        BottomTab(
-            isListen = currentTab.value == "main",
-            isList = currentTab.value == "historical",
-            navController = navController
+fun MainScreen(navController:NavController ){
+
+    val isListen = remember { mutableStateOf(true) }
+    val isHistorical = remember { mutableStateOf(false) }
+    Scaffold(
+        topBar = { TopBar() },
+        content = {topPadding ->
+            if(isListen.value) MainBody(topPadding)
+            if(isHistorical.value) HistoricalBody(topPadding)
+        },
+        bottomBar = {
+
+            BottomTab(isListen = isListen.value,isList = isHistorical.value,
+                onClickListen = {isListen.value = !isListen.value
+                    isHistorical.value = !isHistorical.value},
+                onClickHistorical = {isListen.value = !isListen.value
+                    isHistorical.value = !isHistorical.value},
+                )
+        }
+    )
+
+}
+
+
+@Composable
+fun ButtonListen(onClick :() -> Unit, listenText:String){
+    Column(
+        modifier = Modifier
+            .fillMaxSize(),
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.Center
+    ) {
+        Button(
+            onClick = onClick,
+
+            shape = CircleShape,
+            colors =  ButtonDefaults.buttonColors(containerColor = Color.Transparent), // Fondo transparente
+
+        ) {
+            Image(
+                painter = painterResource(id = R.drawable.ic_button_finder), // Tu imagen personalizada
+                contentDescription = "Icono personalizado",
+                modifier = Modifier.size(200.dp)
+            )
+        }
+    }
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(16.dp),
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.Center
+    ) {
+        Spacer(modifier = Modifier.height(500.dp))
+        Text(
+            text = listenText,
+            style = TextStyle(fontSize = 20.sp,
+                color = Color.Cyan,
+                fontWeight =  FontWeight.Bold,
+                shadow = Shadow(
+                    color = Color.Black,
+                    offset = Offset(-4f, 4f),
+                    blurRadius = 2f
+                ))
         )
     }
 }
 
-
-
 @Composable
-fun MainBody(navController:NavController) {
+fun MainBody(topPadding : PaddingValues) {
     val isToggled = remember { mutableStateOf(false) }
-    Box(
-        modifier = Modifier.fillMaxSize(),
-    ) {
-        var listenText = ""
-        if (isToggled.value){
-            FullScreenVideoBackground()
-            listenText = "Listening..."
-        }else{
-            BackGround()
-            listenText = "Press to listen"
-        }
 
-        TopBar()
-        Column(
-            modifier = Modifier
-                .fillMaxSize(),
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.Center
-        ) {
-            Button(
-                onClick = {isToggled.value = !isToggled.value},
-                modifier = Modifier
-                    .size(200.dp),
-                shape = CircleShape,
-                colors =  ButtonDefaults.buttonColors(containerColor = Color.Transparent), // Fondo transparente
-
-            ) {
-                Image(
-                    painter = painterResource(id = R.drawable.ic_button_finder), // Tu imagen personalizada
-                    contentDescription = "Icono personalizado",
-                    modifier = Modifier.size(200.dp)
-                )
-            }
-        }
-        Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(16.dp),
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.Center
-        ) {
-            Spacer(modifier = Modifier.height(600.dp))
-            Text(
-                text = listenText,
-                style = TextStyle(fontSize = 20.sp,
-                    color = Color.Cyan,
-                    fontWeight =  FontWeight.Bold,
-                    shadow = Shadow(
-                        color = Color.Black,
-                        offset = Offset(-4f, 4f),
-                        blurRadius = 2f
-                    ))
-            )
-        }
-
-
+    var listenText = ""
+    if (isToggled.value){
+        FullScreenVideoBackground()
+        listenText = "Listening..."
+    }else{
+        BackGround()
+        listenText = "Press to listen"
     }
-
+    Box(
+        modifier = Modifier.fillMaxSize().padding(topPadding),
+    ) {
+        ButtonListen(onClick = {isToggled.value = !isToggled.value},listenText)
+    }
 }
 
 @Preview(showBackground = true)

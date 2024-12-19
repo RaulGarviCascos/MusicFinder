@@ -1,10 +1,10 @@
 package com.example.musicfinder.ui.historical
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -25,7 +25,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
 import com.example.musicfinder.data.model.Song
-import coil3.compose.AsyncImage
 import coil3.compose.AsyncImagePainter
 import coil3.compose.rememberAsyncImagePainter
 import com.example.musicfinder.R
@@ -33,15 +32,13 @@ import com.example.musicfinder.R
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun CardSong(song:Song,placeholderResId: Int? = null) {
+fun ListCardSong(song:Song,placeholderResId: Int? = null) {
 
     Card(
         colors = CardDefaults.cardColors(
             containerColor = MaterialTheme.colorScheme.surfaceVariant,
         ),
-        modifier = Modifier
-            .size(width = 500.dp, height = 100.dp)
-
+        modifier = Modifier.fillMaxWidth().height(88.dp).padding(5.dp)
     ) {
         Row(
             verticalAlignment = Alignment.CenterVertically
@@ -52,16 +49,16 @@ fun CardSong(song:Song,placeholderResId: Int? = null) {
                 Text(
                     text = song.title,
                     modifier = Modifier
-                        .padding(10.dp),
+                        .padding(5.dp),
                     textAlign = TextAlign.Center,
-                    fontSize = 25.sp
+                    fontSize = 23.sp
                 )
                 Text(
                     text = song.artist,
                     modifier = Modifier
-                        .padding(10.dp),
+                        .padding(5.dp),
                     textAlign = TextAlign.Center,
-                    fontSize = 20.sp
+                    fontSize = 18.sp
                 )
             }
 
@@ -108,7 +105,7 @@ fun ImageFromUrlSafe(url: String?) {
 @Composable
 fun PreviewTab(){
     var song = Song( title = "Warriors",artist="Imagine Dragons",album="Warriors",url_image="https://i.scdn.co/image/b039549954758689330893bd4a92585092a81cf5",url_spotify="https://open.spotify.com/artist/53XhwfbYqKCa1cC15pYq2q")
-    CardSong(
+    ListCardSong(
         song.copy(
             url_image = "" // Deja vacío para usar el marcador de posición en el Preview
         ),R.drawable.ic_placeholder_image

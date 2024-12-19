@@ -7,6 +7,8 @@ import androidx.navigation.compose.rememberNavController
 import com.example.musicfinder.ui.main.HistoricalScreen
 import com.example.musicfinder.ui.main.MainScreen
 
+
+
 @Composable
 fun AppNavigation(){
     val navController = rememberNavController()
