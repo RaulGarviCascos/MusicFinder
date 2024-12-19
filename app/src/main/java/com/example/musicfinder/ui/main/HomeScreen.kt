@@ -1,4 +1,5 @@
 package com.example.musicfinder.ui.main
+import android.annotation.SuppressLint
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
@@ -21,21 +22,43 @@ import androidx.compose.ui.graphics.Shadow
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
+import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
 import com.example.musicfinder.R
 import com.example.musicfinder.ui.common.BottomTab
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.NavHost
+import com.example.musicfinder.ui.navigation.AppNavigation
+
+@SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
+@Composable
+fun MainScreen(navController: NavController) {
+    val currentTab = remember { mutableStateOf("main") } // Estado para la pestaña activa
+    Scaffold {
+        MainBody(navController)
+        BottomTab(
+            isListen = currentTab.value == "main",
+            isList = currentTab.value == "historical",
+            navController = navController
+        )
+    }
+}
+
 
 
 @Composable
-fun MainScreen() {
+fun MainBody(navController:NavController) {
     val isToggled = remember { mutableStateOf(false) }
     Box(
         modifier = Modifier.fillMaxSize(),
     ) {
-
+        var listenText = ""
         if (isToggled.value){
             FullScreenVideoBackground()
+            listenText = "Listening..."
         }else{
             BackGround()
+            listenText = "Press to listen"
         }
 
         TopBar()
@@ -69,7 +92,7 @@ fun MainScreen() {
         ) {
             Spacer(modifier = Modifier.height(600.dp))
             Text(
-                text = "Press to listen",
+                text = listenText,
                 style = TextStyle(fontSize = 20.sp,
                     color = Color.Cyan,
                     fontWeight =  FontWeight.Bold,
@@ -83,11 +106,11 @@ fun MainScreen() {
 
 
     }
-    BottomTab(isListen = true, isList = false)
+
 }
 
 @Preview(showBackground = true)
 @Composable
 fun PreviewScreen(){
-    MainScreen()
+    AppNavigation()
 }
