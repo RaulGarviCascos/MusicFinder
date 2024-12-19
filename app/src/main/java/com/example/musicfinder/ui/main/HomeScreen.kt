@@ -1,4 +1,5 @@
 package com.example.musicfinder.ui.main
+import android.annotation.SuppressLint
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
@@ -21,37 +22,52 @@ import androidx.compose.ui.graphics.Shadow
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
+import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
 import com.example.musicfinder.R
 import com.example.musicfinder.ui.common.BottomTab
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.NavHost
+import com.example.musicfinder.ui.navigation.AppNavigation
+
+@SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
+@Composable
+fun MainScreen(navController: NavController) {
+    val currentTab = remember { mutableStateOf("main") } // Estado para la pestaña activa
+    Scaffold {
+        MainBody(navController)
+        BottomTab(
+            isListen = currentTab.value == "main",
+            isList = currentTab.value == "historical",
+            navController = navController
+        )
+    }
+}
+
 
 
 @Composable
-fun MainScreen() {
+fun MainBody(navController:NavController) {
     val isToggled = remember { mutableStateOf(false) }
     Box(
         modifier = Modifier.fillMaxSize(),
     ) {
-
+        var listenText = ""
         if (isToggled.value){
             FullScreenVideoBackground()
+            listenText = "Listening..."
         }else{
             BackGround()
+            listenText = "Press to listen"
         }
 
         TopBar()
-
-        // Imagen de fondo
-
         Column(
             modifier = Modifier
-                .fillMaxSize()
-                .padding(16.dp),
+                .fillMaxSize(),
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center
         ) {
-            Spacer(modifier = Modifier.height(40.dp))
-
-            // Botón de Reconocimiento
             Button(
                 onClick = {isToggled.value = !isToggled.value},
                 modifier = Modifier
@@ -63,7 +79,7 @@ fun MainScreen() {
                 Image(
                     painter = painterResource(id = R.drawable.ic_button_finder), // Tu imagen personalizada
                     contentDescription = "Icono personalizado",
-                    modifier = Modifier.size(200.dp) // Tamaño del icono
+                    modifier = Modifier.size(200.dp)
                 )
             }
         }
@@ -76,26 +92,25 @@ fun MainScreen() {
         ) {
             Spacer(modifier = Modifier.height(600.dp))
             Text(
-                text = "Press to listen",
+                text = listenText,
                 style = TextStyle(fontSize = 20.sp,
                     color = Color.Cyan,
                     fontWeight =  FontWeight.Bold,
                     shadow = Shadow(
-                        color = Color.Black, // Color de la sombra
-                        offset = Offset(-4f, 4f), // Desplazamiento de la sombra
-                        blurRadius = 2f // Difuminado de la sombra
+                        color = Color.Black,
+                        offset = Offset(-4f, 4f),
+                        blurRadius = 2f
                     ))
             )
         }
 
 
     }
-    BottomTab(isListen = true, isList = false)
+
 }
 
 @Preview(showBackground = true)
 @Composable
 fun PreviewScreen(){
-
-    MainScreen()
+    AppNavigation()
 }

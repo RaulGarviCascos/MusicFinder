@@ -40,8 +40,8 @@ fun ButtonTabBar(isThis: Boolean,icon_name : Int, label : String,onClick :() -> 
             onClick = onClick,
             shape = RectangleShape,
             modifier = Modifier
-                .padding(4.dp), // Espaciado entre botones
-            colors =  ButtonDefaults.buttonColors(containerColor = Color.Transparent) // Fondo transparente
+                .padding(4.dp),
+            colors =  ButtonDefaults.buttonColors(containerColor = Color.Transparent)
         ) {
 
             var colorOn = Color.White
@@ -55,7 +55,7 @@ fun ButtonTabBar(isThis: Boolean,icon_name : Int, label : String,onClick :() -> 
                 Image(
                     painter = painterResource(id = icon_name),
                     contentDescription = "Icono personalizado",
-                    modifier = Modifier.size(24.dp), // Tamaño del icono
+                    modifier = Modifier.size(24.dp),
                     colorFilter = ColorFilter.tint(colorOn)
                 )
 
@@ -63,16 +63,15 @@ fun ButtonTabBar(isThis: Boolean,icon_name : Int, label : String,onClick :() -> 
                 Text(
                     text = label,
                     color = colorOn,
-                    fontSize = 12.sp // Tamaño del texto
+                    fontSize = 12.sp
                 )
-                // Línea en la parte inferior del botón
                 if (isThis){
                     Box(
                         modifier = Modifier
                             .width(35.dp)
-                            .height(3.dp) // Espesor de la línea
+                            .height(3.dp)
                             .padding(top = 1.dp)
-                            .background(colorOn) // Color de la línea
+                            .background(colorOn)
                     )
                 }
             }
