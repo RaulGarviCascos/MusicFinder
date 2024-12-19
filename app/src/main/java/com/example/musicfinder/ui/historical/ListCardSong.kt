@@ -2,6 +2,9 @@ package com.example.musicfinder.ui.historical
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -35,9 +38,7 @@ fun ListCardSong(song:Song,placeholderResId: Int? = null) {
         colors = CardDefaults.cardColors(
             containerColor = MaterialTheme.colorScheme.surfaceVariant,
         ),
-        modifier = Modifier
-            .size(width = 500.dp, height = 100.dp).padding(5.dp)
-
+        modifier = Modifier.fillMaxWidth().height(88.dp).padding(5.dp)
     ) {
         Row(
             verticalAlignment = Alignment.CenterVertically
@@ -48,16 +49,16 @@ fun ListCardSong(song:Song,placeholderResId: Int? = null) {
                 Text(
                     text = song.title,
                     modifier = Modifier
-                        .padding(10.dp),
+                        .padding(5.dp),
                     textAlign = TextAlign.Center,
-                    fontSize = 25.sp
+                    fontSize = 23.sp
                 )
                 Text(
                     text = song.artist,
                     modifier = Modifier
-                        .padding(10.dp),
+                        .padding(5.dp),
                     textAlign = TextAlign.Center,
-                    fontSize = 20.sp
+                    fontSize = 18.sp
                 )
             }
 
