@@ -41,16 +41,17 @@ fun MainScreen(navController:NavController ){
     Scaffold(
         topBar = { TopBar() },
         content = {topPadding ->
+            BackGround()
             if(isListen.value) MainBody(topPadding)
             if(isHistorical.value) HistoricalBody(topPadding)
         },
         bottomBar = {
 
             BottomTab(isListen = isListen.value,isList = isHistorical.value,
-                onClickListen = {isListen.value = !isListen.value
-                    isHistorical.value = !isHistorical.value},
-                onClickHistorical = {isListen.value = !isListen.value
-                    isHistorical.value = !isHistorical.value},
+                onClickListen = {isListen.value = true
+                    isHistorical.value =false},
+                onClickHistorical = { isHistorical.value =true
+                    isListen.value = false},
                 )
         }
     )
@@ -108,10 +109,10 @@ fun MainBody(topPadding : PaddingValues) {
 
     var listenText = ""
     if (isToggled.value){
-        FullScreenVideoBackground()
+        //FullScreenVideoBackground()
         listenText = "Listening..."
     }else{
-        BackGround()
+        //BackGround()
         listenText = "Press to listen"
     }
     Box(
