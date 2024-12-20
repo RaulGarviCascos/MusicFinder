@@ -49,16 +49,16 @@ fun HistoricalScreen(navController:NavController ){
 }
 @Composable
 fun HistoricalBody(padding : PaddingValues) {
-    BackGround()
+
     Box(
         modifier = Modifier.fillMaxSize().padding(padding)
     ) {
         val context = LocalContext.current
         val repository = SongRepository(context)
-        val song = Song( title = "Warriors",artist="Imagine Dragons",album="Warriors",url_image="https://i.scdn.co/image/b039549954758689330893bd4a92585092a81cf5",url_spotify="https://open.spotify.com/artist/53XhwfbYqKCa1cC15pYq2q")
-
-        val songs = listOf(song,song,song,song,song,song,song,song,song,song,song,song,song,song,song,song,song,song,song,song,song)
-        repository.saveSongs(key="Songs",songs)
+//        val song = Song( title = "Warriors",artist="Imagine Dragons",album="Warriors",url_image="https://i.scdn.co/image/b039549954758689330893bd4a92585092a81cf5",url_spotify="https://open.spotify.com/artist/53XhwfbYqKCa1cC15pYq2q")
+//
+//        val songs = listOf(song,song,song,song,song,song,song,song,song,song,song,song,song,song,song,song,song,song,song,song,song)
+//        repository.saveSongs(key="Songs",songs)
         val savedSongs = repository.getSongs(key="Songs")
         Log.d("Songs", "Songs: $savedSongs")
 
