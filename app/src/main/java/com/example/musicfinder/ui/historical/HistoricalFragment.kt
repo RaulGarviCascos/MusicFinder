@@ -31,20 +31,20 @@ import com.example.musicfinder.ui.navigation.AppScreens
 //ya no lo uso
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
-fun HistoricalScreen(navController:NavController ){
-    val currentTab = remember { mutableStateOf(AppScreens.HistoricalScreen.route) }
-    Scaffold(
-        topBar = { TopBar() },
-        content = {topPadding ->
-            HistoricalBody(topPadding)
-        },
-        bottomBar = {
-            BottomTabNavigation(
-                isListen = currentTab.value == AppScreens.MainScreen.route,
-                isList = currentTab.value == AppScreens.HistoricalScreen.route,
-                navController = navController)
-            }
-        )
+fun HistoricalScreen(){
+//    val currentTab = remember { mutableStateOf(AppScreens.HistoricalScreen.route) }
+//    Scaffold(
+//        topBar = { TopBar() },
+//        content = {topPadding ->
+//            HistoricalBody(topPadding)
+//        },
+//        bottomBar = {
+//            BottomTabNavigation(
+//                isListen = currentTab.value == AppScreens.MainScreen.route,
+//                isList = currentTab.value == AppScreens.HistoricalScreen.route,
+//                navController = navController)
+//            }
+//        )
 
 }
 @Composable

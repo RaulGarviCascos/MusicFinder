@@ -11,7 +11,7 @@ import com.example.musicfinder.R
 @Composable
 fun BackGround(){
     Image(
-        painter = painterResource(id = R.drawable.captura_background), // Reemplaza con tu imagen
+        painter = painterResource(id = R.drawable.wallpaper_musicfinder), // Reemplaza con tu imagen
         contentDescription = "Background Image",
         contentScale = ContentScale.Crop, // Para que ocupe toda la pantalla
         modifier = Modifier.fillMaxSize()
