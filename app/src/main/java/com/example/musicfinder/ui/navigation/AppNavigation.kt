@@ -15,10 +15,10 @@ fun AppNavigation(){
     val navController = rememberNavController()
     NavHost(navController = navController, startDestination = AppScreens.MainScreen.route){
         composable( AppScreens.MainScreen.route) {
-            MainScreen(navController)
+            MainScreen()
         }
         composable( AppScreens.HistoricalScreen.route) {
-            HistoricalScreen(navController)
+            HistoricalScreen()
         }
     }
 }

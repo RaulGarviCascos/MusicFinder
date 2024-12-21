@@ -1,5 +1,13 @@
 package com.example.musicfinder.ui.main
 import android.annotation.SuppressLint
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.core.Spring
+import androidx.compose.animation.core.spring
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.slideInHorizontally
+import androidx.compose.animation.slideOutHorizontally
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
@@ -15,47 +23,103 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.musicfinder.ui.common.TopBar
 import com.example.musicfinder.ui.common.BackGround
-import com.example.musicfinder.ui.common.FullScreenVideoBackground
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Shadow
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
-import androidx.navigation.NavController
-import androidx.navigation.compose.rememberNavController
 import com.example.musicfinder.R
 import com.example.musicfinder.ui.common.BottomTab
-import androidx.navigation.compose.composable
-import androidx.navigation.compose.NavHost
-import com.example.musicfinder.ui.common.BottomTab
+import androidx.compose.foundation.gestures.detectHorizontalDragGestures
 import com.example.musicfinder.ui.navigation.AppNavigation
-import com.example.musicfinder.ui.navigation.AppScreens
+import androidx.compose.ui.input.pointer.pointerInput
+import androidx.compose.animation.core.Animatable
+import androidx.compose.ui.input.pointer.pointerInput
+import androidx.compose.ui.unit.IntOffset
+import kotlin.math.roundToInt
+import androidx.compose.runtime.LaunchedEffect
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
-fun MainScreen(navController:NavController ){
-
+fun MainScreen() {
     val isListen = remember { mutableStateOf(true) }
     val isHistorical = remember { mutableStateOf(false) }
+
     Scaffold(
         topBar = { TopBar() },
-        content = {topPadding ->
-            BackGround()
-            if(isListen.value) MainBody(topPadding)
-            if(isHistorical.value) HistoricalBody(topPadding)
+        content = { topPadding ->
+            Box(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .pointerInput(Unit) {
+                        detectHorizontalDragGestures(
+
+                            onHorizontalDrag = { change, dragAmount ->
+                                if (dragAmount > 15) { // Desliza a la derecha
+                                    isListen.value = true
+                                    isHistorical.value = false
+                                } else if (dragAmount < -15) { // Desliza a la izquierda
+                                    isListen.value = false
+                                    isHistorical.value = true
+                                }
+                            }
+                        )
+                    }
+            ) {
+                BackGround()
+                AnimatedContent(
+                    visible = isListen.value,
+                    topPadding = topPadding,
+                    enterDirection = -1
+                ) {
+                    MainBody(it)
+                }
+
+                AnimatedContent(
+                    visible = isHistorical.value,
+                    topPadding = topPadding,
+                    enterDirection = 1
+                ) {
+                    HistoricalBody(it)
+                }
+            }
         },
         bottomBar = {
-
-            BottomTab(isListen = isListen.value,isList = isHistorical.value,
-                onClickListen = {isListen.value = true
-                    isHistorical.value =false},
-                onClickHistorical = { isHistorical.value =true
-                    isListen.value = false},
-                )
+            BottomTab(
+                isListen = isListen.value,
+                isList = isHistorical.value,
+                onClickListen = {
+                    isListen.value = true
+                    isHistorical.value = false
+                },
+                onClickHistorical = {
+                    isHistorical.value = true
+                    isListen.value = false
+                }
+            )
         }
     )
-
+}
+@Composable
+fun AnimatedContent(visible:Boolean,topPadding: PaddingValues, enterDirection: Int, content: @Composable (PaddingValues) -> Unit){
+    AnimatedVisibility(
+        visible = visible,
+        enter =
+        slideInHorizontally(animationSpec = tween(durationMillis = 200)) { fullWidth ->
+            fullWidth / 3*enterDirection
+        } +
+                fadeIn(
+                    // Overwrites the default animation with tween
+                    animationSpec = tween(durationMillis = 200)
+                ),
+        exit =
+        slideOutHorizontally(animationSpec = spring(stiffness = Spring.StiffnessHigh)) {
+            200*enterDirection
+        } + fadeOut()
+    ) {
+       content(topPadding)
+    }
 }
 
 
@@ -69,7 +133,6 @@ fun ButtonListen(onClick :() -> Unit, listenText:String){
     ) {
         Button(
             onClick = onClick,
-
             shape = CircleShape,
             colors =  ButtonDefaults.buttonColors(containerColor = Color.Transparent), // Fondo transparente
 
@@ -116,7 +179,9 @@ fun MainBody(topPadding : PaddingValues) {
         listenText = "Press to listen"
     }
     Box(
-        modifier = Modifier.fillMaxSize().padding(topPadding),
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(topPadding),
     ) {
         ButtonListen(onClick = {isToggled.value = !isToggled.value},listenText)
     }
