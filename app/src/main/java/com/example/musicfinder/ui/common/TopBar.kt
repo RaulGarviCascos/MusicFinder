@@ -25,8 +25,8 @@ fun TopBar() {
     // TopAppBar con fondo gris
     Box(
         modifier = Modifier
-            .fillMaxWidth() // Asegura que la barra ocupa todo el ancho
-            .background(Color(0xFFE0E0E0)) // Fondo gris
+            .fillMaxWidth()
+            .background(Color(0xFFE0E0E0))
     ) {
         TopAppBar(
             colors = TopAppBarDefaults.topAppBarColors(
@@ -40,7 +40,7 @@ fun TopBar() {
                 Box(
                     modifier = Modifier
                         .fillMaxWidth(),
-                    contentAlignment = Alignment.Center // Centra el título en la barra
+                    contentAlignment = Alignment.Center
                 ) {
                     Text(
                         text = "Music Finder",
@@ -51,7 +51,7 @@ fun TopBar() {
                 }
             },
             navigationIcon = {
-                IconButton(onClick = { /* Acción del icono de menú */ }) {
+                IconButton(onClick = { }) {
                     Icon(
                         imageVector = Icons.Filled.Menu,
                         contentDescription = "Menu Icon",
@@ -60,14 +60,14 @@ fun TopBar() {
                 }
             },
             actions = {
-                IconButton(onClick = { /* Acción del avatar */ }) {
+                IconButton(onClick = { }) {
                     Icon(
                         imageVector = Icons.Filled.Person,
                         contentDescription = "Avatar Icon",
                         tint = Color.White
                     )
                 }
-            }, modifier = Modifier.fillMaxWidth() // Explicita el ancho completo
+            }, modifier = Modifier.fillMaxWidth()
         )
     }
 }

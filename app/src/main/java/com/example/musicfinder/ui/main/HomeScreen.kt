@@ -35,10 +35,13 @@ import androidx.compose.foundation.gestures.detectHorizontalDragGestures
 import com.example.musicfinder.ui.navigation.AppNavigation
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.animation.core.Animatable
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.PlayArrow
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.unit.IntOffset
 import kotlin.math.roundToInt
 import androidx.compose.runtime.LaunchedEffect
+import com.example.musicfinder.ui.record.RecordAudio
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
@@ -122,15 +125,19 @@ fun AnimatedContent(visible:Boolean,topPadding: PaddingValues, enterDirection: I
     }
 }
 
-
 @Composable
-fun ButtonListen(onClick :() -> Unit, listenText:String){
-    Column(
-        modifier = Modifier
-            .fillMaxSize(),
-        horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.Center
-    ) {
+fun PlayButton(onClick: () -> Unit){ 
+    IconButton(onClick = onClick) {
+        Icon(
+            imageVector = Icons.Filled.PlayArrow,
+            contentDescription = "Play",
+            tint = Color.White
+        )
+    }
+
+}
+@Composable
+fun ButtonListen(onClick :() -> Unit){
         Button(
             onClick = onClick,
             shape = CircleShape,
@@ -143,32 +150,12 @@ fun ButtonListen(onClick :() -> Unit, listenText:String){
                 modifier = Modifier.size(200.dp)
             )
         }
-    }
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(16.dp),
-        horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.Center
-    ) {
-        Spacer(modifier = Modifier.height(500.dp))
-        Text(
-            text = listenText,
-            style = TextStyle(fontSize = 20.sp,
-                color = Color.Cyan,
-                fontWeight =  FontWeight.Bold,
-                shadow = Shadow(
-                    color = Color.Black,
-                    offset = Offset(-4f, 4f),
-                    blurRadius = 2f
-                ))
-        )
-    }
 }
 
 @Composable
 fun MainBody(topPadding : PaddingValues) {
     val isToggled = remember { mutableStateOf(false) }
+    val play = remember { mutableStateOf(false) }
 
     var listenText = ""
     if (isToggled.value){
@@ -178,13 +165,40 @@ fun MainBody(topPadding : PaddingValues) {
         //BackGround()
         listenText = "Press to listen"
     }
+
+    val recordAudio = RecordAudio()
+    recordAudio.onRecord(isToggled.value,"temporalName")
+    recordAudio.onPlay(play.value,"temporalName")
     Box(
         modifier = Modifier
             .fillMaxSize()
             .padding(topPadding),
     ) {
-        ButtonListen(onClick = {isToggled.value = !isToggled.value},listenText)
+        Column(
+            modifier = Modifier
+            .fillMaxSize()
+            .padding(16.dp),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.Center)
+        {
+            ButtonListen(onClick = {isToggled.value = !isToggled.value})
+
+            Text(
+                text = listenText,
+                style = TextStyle(fontSize = 20.sp,
+                    color = Color.Cyan,
+                    fontWeight =  FontWeight.Bold,
+                    shadow = Shadow(
+                        color = Color.Black,
+                        offset = Offset(-4f, 4f),
+                        blurRadius = 2f
+                    ))
+            )
+            PlayButton(onClick = {play.value = !play.value})
+        }
+
     }
+
 }
 
 @Preview(showBackground = true)
