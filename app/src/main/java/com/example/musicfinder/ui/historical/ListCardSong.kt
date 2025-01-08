@@ -1,6 +1,8 @@
 package com.example.musicfinder.ui.historical
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -21,6 +23,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
@@ -41,9 +44,8 @@ fun ListCardSong(song:Song,placeholderResId: Int? = null) {
         modifier = Modifier.fillMaxWidth().height(88.dp).padding(5.dp)
     ) {
         Row(
-            verticalAlignment = Alignment.CenterVertically
         ) {
-            ImageFromUrlSafe(song.url_image)
+            ImageFromUrlSafe(song.url_image,80)
             Column(
             ){
                 Text(
@@ -69,7 +71,7 @@ fun ListCardSong(song:Song,placeholderResId: Int? = null) {
 
 
 @Composable
-fun ImageFromUrlSafe(url: String?) {
+fun ImageFromUrlSafe(url: String?,size: Int) {
     val painter = rememberAsyncImagePainter(model = url)
     val state = painter.state.collectAsState().value
 
@@ -78,7 +80,7 @@ fun ImageFromUrlSafe(url: String?) {
                 Image(
                     painter = painterResource(id = R.drawable.ic_placeholder_image),
                     contentDescription = "Cargando",
-                    modifier = Modifier.size(80.dp).padding(5.dp).clip(RoundedCornerShape(10.dp)),
+                    modifier = Modifier.size(size.dp).padding(5.dp).clip(RoundedCornerShape(10.dp)),
                     alignment =  Alignment.Center
                 )
         }
@@ -86,7 +88,7 @@ fun ImageFromUrlSafe(url: String?) {
                 Image(
                     painter = painterResource(id = R.drawable.ic_placeholder_image),
                     contentDescription = "Error",
-                    modifier = Modifier.size(80.dp).padding(5.dp).clip(RoundedCornerShape(10.dp)),
+                    modifier = Modifier.size(size.dp).padding(5.dp).clip(RoundedCornerShape(10.dp)),
                     alignment =  Alignment.Center
                 )
         }
@@ -94,7 +96,7 @@ fun ImageFromUrlSafe(url: String?) {
                 Image(
                     painter = painter,
                     contentDescription = "Imagen desde URL",
-                    modifier = Modifier.size(80.dp).padding(5.dp).clip(RoundedCornerShape(10.dp)),
+                    modifier = Modifier.size(size.dp).padding(5.dp).clip(RoundedCornerShape(10.dp)),
                     alignment =  Alignment.Center
                 )
         }
