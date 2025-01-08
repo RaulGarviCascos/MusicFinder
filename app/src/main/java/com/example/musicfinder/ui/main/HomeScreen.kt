@@ -134,7 +134,7 @@ fun ButtonListen(onClick :() -> Unit, listenText:String){
         Button(
             onClick = onClick,
             shape = CircleShape,
-            colors =  ButtonDefaults.buttonColors(containerColor = Color.Transparent), // Fondo transparente
+            colors =  ButtonDefaults.buttonColors(containerColor = Color.Transparent)
 
         ) {
             Image(
