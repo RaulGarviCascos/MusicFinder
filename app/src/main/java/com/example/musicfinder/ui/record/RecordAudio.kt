@@ -3,29 +3,63 @@ import android.media.MediaPlayer
 import android.media.MediaRecorder
 import java.io.IOException
 import android.util.Log
+import android.widget.Toast
+import androidx.activity.ComponentActivity
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.compose.material3.AlertDialog
+import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.ui.platform.LocalContext
+import android.Manifest
+import java.io.File
 
-private const val LOG_TAG = "AudioRecordTest"
-private const val REQUEST_RECORD_AUDIO_PERMISSION = 200
+@Composable
+fun RecordAudioWrapper(permissions:Array<String>, onPermissionGranted: () -> Unit) {
+    val context = LocalContext.current
+    val permissionLauncher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.RequestPermission()
+    ) { isGranted ->
+        if (isGranted) {
+            onPermissionGranted()
+        } else {
+            Toast.makeText(context, "Permiso de grabación denegado", Toast.LENGTH_SHORT).show()
+        }
+    }
+    for(permission in permissions){
+        LaunchedEffect(Unit) {
+            permissionLauncher.launch(permission)
+        }
+    }
+}
 
-class RecordAudio  {
+object RecordAudio  {
 
     private var player: MediaPlayer? = null
     private var recorder: MediaRecorder? = null
+    private val LOG_TAG = "AudioRecordTest"
 
+    fun startPlaying(fileName:String, onCompletion: () -> Unit) {
 
-    private fun startPlaying(fileName:String) {
         player = MediaPlayer().apply {
             try {
                 setDataSource(fileName)
                 prepare()
                 start()
+                // Callback cuando el audio termina
+                setOnCompletionListener {
+                    onCompletion()
+                    stopPlaying()
+                }
             } catch (e: IOException) {
                 Log.e(LOG_TAG, "prepare() failed")
             }
         }
     }
 
-    private fun stopPlaying() {
+    fun stopPlaying() {
         player?.release()
         player = null
     }
@@ -40,7 +74,7 @@ class RecordAudio  {
             try {
                 prepare()
             } catch (e: IOException) {
-                Log.e(LOG_TAG, "prepare() failed")
+                Log.e(LOG_TAG, "prepare() failed: ${e.message}")
             }
             start()
         }
@@ -58,13 +92,9 @@ class RecordAudio  {
         startRecording(fileName = fileName)
     } else {
         stopRecording()
-    }
+     }
 
-    fun onPlay(start: Boolean,fileName:String) = if (start) {
-        startPlaying(fileName = fileName)
-    } else {
-        stopPlaying()
-    }
+
 
 
 }
