@@ -1,4 +1,5 @@
 package com.example.musicfinder.ui.main
+import android.Manifest
 import android.annotation.SuppressLint
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.Spring
@@ -41,7 +42,11 @@ import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.unit.IntOffset
 import kotlin.math.roundToInt
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.setValue
+import androidx.compose.ui.platform.LocalContext
 import com.example.musicfinder.ui.record.RecordAudio
+import com.example.musicfinder.ui.record.RecordAudioWrapper
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
@@ -137,7 +142,7 @@ fun PlayButton(onClick: () -> Unit){
 
 }
 @Composable
-fun ButtonListen(onClick :() -> Unit){
+fun RecordButton(onClick :() -> Unit){
         Button(
             onClick = onClick,
             shape = CircleShape,
@@ -154,21 +159,25 @@ fun ButtonListen(onClick :() -> Unit){
 
 @Composable
 fun MainBody(topPadding : PaddingValues) {
-    val isToggled = remember { mutableStateOf(false) }
+    val record = remember { mutableStateOf(false) }
     val play = remember { mutableStateOf(false) }
+    val permissionGranted = remember { mutableStateOf(false) }
+    val fileName = "${LocalContext.current.externalCacheDir?.absolutePath}/audiorecordtest.3gp"
+    val permissions = arrayOf(
+        Manifest.permission.RECORD_AUDIO,
+        Manifest.permission.READ_MEDIA_AUDIO
+    )
 
-    var listenText = ""
-    if (isToggled.value){
-        //FullScreenVideoBackground()
-        listenText = "Listening..."
+    // Solicitar permisos antes de interactuar
+    RecordAudioWrapper(permissions) {
+        permissionGranted.value = true
+    }
+    var listenText = if (record.value){
+        "Listening..."
     }else{
-        //BackGround()
-        listenText = "Press to listen"
+        "Press to listen"
     }
 
-    val recordAudio = RecordAudio()
-    recordAudio.onRecord(isToggled.value,"temporalName")
-    recordAudio.onPlay(play.value,"temporalName")
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -181,7 +190,8 @@ fun MainBody(topPadding : PaddingValues) {
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center)
         {
-            ButtonListen(onClick = {isToggled.value = !isToggled.value})
+            RecordButton(onClick = {record.value = !record.value
+                RecordAudio.onRecord(record.value, fileName = fileName)})
 
             Text(
                 text = listenText,
@@ -194,7 +204,18 @@ fun MainBody(topPadding : PaddingValues) {
                         blurRadius = 2f
                     ))
             )
-            PlayButton(onClick = {play.value = !play.value})
+            PlayButton(
+                onClick = {
+                    play.value = !play.value
+                    if (play.value) {
+                        RecordAudio.startPlaying(fileName) {
+                            //accion que se ejecutara cuando el completion termine
+                            play.value = false
+                        }
+                    } else {
+                        RecordAudio.stopPlaying()
+                    }
+                })
         }
 
     }
