@@ -53,7 +53,9 @@ fun HistoricalBody(padding : PaddingValues) {
         val context = LocalContext.current
         val repository = SongRepository(context)
 
-//        val song = Song( title = "Warriors",artist="Imagine Dragons",album="Warriors",url_image="https://i.scdn.co/image/b039549954758689330893bd4a92585092a81cf5",url_spotify="https://open.spotify.com/artist/53XhwfbYqKCa1cC15pYq2q")
+//        repository.clearAll()
+//
+//        val song = Song( title = "Warriors",artist="Imagine Dragons",album="Smoke+Mirrors",url_image="https://i.scdn.co/image/b039549954758689330893bd4a92585092a81cf5",url_spotify="https://open.spotify.com/intl-es/track/6Q2JimwoGgG5W9HdmH1hmq")
 //        val songs = listOf(song,song,song,song,song,song,song,song,song,song,song,song,song,song,song,song,song,song,song,song,song)
 //        repository.saveSongs(key="Songs",songs)
 

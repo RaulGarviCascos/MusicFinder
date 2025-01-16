@@ -1,4 +1,5 @@
 package com.example.musicfinder.ui.historical
+import android.content.Context
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -35,6 +36,8 @@ import com.example.musicfinder.data.model.Song
 import com.example.musicfinder.R
 import android.net.Uri
 import android.content.Intent
+import android.content.pm.PackageManager
+import android.widget.Toast
 import androidx.compose.ui.platform.LocalContext
 
 @Composable
@@ -90,12 +93,20 @@ fun DetailedCard(song:Song) {
                     )
                     Row (modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.Center){
                         Button(onClick = {
-                            val spotifyIntent = Intent(Intent.ACTION_VIEW).apply {
-                                data = Uri.parse(song.url_spotify) // Reemplaza con tu URL
-                                // Si quieres que intente abrir directamente la app de Spotify
-                                setPackage(song.url_spotify)
+                            val uri = Uri.parse(song.url_spotify)
+                            try {
+                                val spotifyIntent = Intent(Intent.ACTION_VIEW, uri).apply {
+                                    `package` = "com.spotify.music"
+                                }
+                                context.startActivity(spotifyIntent)
+                            } catch (e: Exception) {
+                                if (isSpotifyInstalled(context)){
+                                    val browserIntent = Intent(Intent.ACTION_VIEW, uri)
+                                    context.startActivity(browserIntent)
+                                }
+                                e.printStackTrace()
+                                Toast.makeText(context, "Ocurrió un error.", Toast.LENGTH_SHORT).show()
                             }
-                            context.startActivity(spotifyIntent)
                         },
                             shape = CircleShape,
                             colors =  ButtonDefaults.buttonColors(containerColor = Color.Transparent)) {
@@ -112,6 +123,15 @@ fun DetailedCard(song:Song) {
             }
         }
 
+}
+fun isSpotifyInstalled(context: Context): Boolean {
+    val packageManager = context.packageManager
+    return try {
+        packageManager.getPackageInfo("com.spotify.music", 0)
+        true
+    } catch (e: PackageManager.NameNotFoundException) {
+        false
+    }
 }
 
 
