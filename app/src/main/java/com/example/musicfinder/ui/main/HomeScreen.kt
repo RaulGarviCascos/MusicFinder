@@ -162,7 +162,7 @@ fun MainBody(topPadding : PaddingValues) {
     val record = remember { mutableStateOf(false) }
     val play = remember { mutableStateOf(false) }
     val permissionGranted = remember { mutableStateOf(false) }
-    val fileName = "${LocalContext.current.externalCacheDir?.absolutePath}/audiorecordtest.3gp"
+    val fileName = "${LocalContext.current.externalCacheDir?.absolutePath}/audiorecordtest.mp4"
     val permissions = arrayOf(
         Manifest.permission.RECORD_AUDIO,
         Manifest.permission.READ_MEDIA_AUDIO
