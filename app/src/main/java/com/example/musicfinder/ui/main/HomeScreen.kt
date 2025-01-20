@@ -162,7 +162,8 @@ fun MainBody(topPadding : PaddingValues) {
     val record = remember { mutableStateOf(false) }
     val play = remember { mutableStateOf(false) }
     val permissionGranted = remember { mutableStateOf(false) }
-    val fileName = "${LocalContext.current.externalCacheDir?.absolutePath}/audiorecordtest.mp4"
+    val context = LocalContext.current
+    val fileName = "${context.externalCacheDir?.absolutePath}/audiorecordtest.mp4"
     val permissions = arrayOf(
         Manifest.permission.RECORD_AUDIO,
         Manifest.permission.READ_MEDIA_AUDIO
@@ -191,7 +192,7 @@ fun MainBody(topPadding : PaddingValues) {
             verticalArrangement = Arrangement.Center)
         {
             RecordButton(onClick = {record.value = !record.value
-                RecordAudio.onRecord(record.value, fileName = fileName)})
+                RecordAudio.onRecord(record.value, fileName = fileName,context)})
 
             Text(
                 text = listenText,

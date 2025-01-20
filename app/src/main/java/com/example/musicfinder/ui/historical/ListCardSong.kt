@@ -31,11 +31,12 @@ import com.example.musicfinder.data.model.Song
 import coil3.compose.AsyncImagePainter
 import coil3.compose.rememberAsyncImagePainter
 import com.example.musicfinder.R
+import com.example.musicfinder.data.model.AudDResponseModels.SongResult
 
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun ListCardSong(song:Song,placeholderResId: Int? = null) {
+fun ListCardSong(song:SongResult,placeholderResId: Int? = null) {
 
     Card(
         colors = CardDefaults.cardColors(
@@ -45,23 +46,27 @@ fun ListCardSong(song:Song,placeholderResId: Int? = null) {
     ) {
         Row(
         ) {
-            ImageFromUrlSafe(song.url_image,80)
+            ImageFromUrlSafe(song.spotify?.album?.images?.get(1)?.url,80)
             Column(
             ){
-                Text(
-                    text = song.title,
-                    modifier = Modifier
-                        .padding(5.dp),
-                    textAlign = TextAlign.Center,
-                    fontSize = 23.sp
-                )
-                Text(
-                    text = song.artist,
-                    modifier = Modifier
-                        .padding(5.dp),
-                    textAlign = TextAlign.Center,
-                    fontSize = 18.sp
-                )
+                song.title?.let {
+                    Text(
+                        text = it,
+                        modifier = Modifier
+                            .padding(5.dp),
+                        textAlign = TextAlign.Center,
+                        fontSize = 23.sp
+                    )
+                }
+                song.artist?.let {
+                    Text(
+                        text = it,
+                        modifier = Modifier
+                            .padding(5.dp),
+                        textAlign = TextAlign.Center,
+                        fontSize = 18.sp
+                    )
+                }
             }
 
         }
@@ -103,14 +108,14 @@ fun ImageFromUrlSafe(url: String?,size: Int) {
     }
 }
 
-@Preview(showBackground = true)
-@Composable
-fun PreviewTab(){
-    var song = Song( title = "Warriors",artist="Imagine Dragons",album="Warriors",url_image="https://i.scdn.co/image/b039549954758689330893bd4a92585092a81cf5",url_spotify="https://open.spotify.com/artist/53XhwfbYqKCa1cC15pYq2q")
-    ListCardSong(
-        song.copy(
-            url_image = "" // Deja vacío para usar el marcador de posición en el Preview
-        ),R.drawable.ic_placeholder_image
-    )
-}
+//@Preview(showBackground = true)
+//@Composable
+//fun PreviewTab(){
+//    var song = Song( title = "Warriors",artist="Imagine Dragons",album="Warriors",url_image="https://i.scdn.co/image/b039549954758689330893bd4a92585092a81cf5",url_spotify="https://open.spotify.com/artist/53XhwfbYqKCa1cC15pYq2q")
+//    ListCardSong(
+//        song.copy(
+//            url_image = "" // Deja vacío para usar el marcador de posición en el Preview
+//        ),R.drawable.ic_placeholder_image
+//    )
+//}
 

@@ -1,20 +1,16 @@
 package com.example.musicfinder.ui.record
+import android.content.Context
 import android.media.MediaPlayer
 import android.media.MediaRecorder
 import java.io.IOException
 import android.util.Log
 import android.widget.Toast
-import androidx.activity.ComponentActivity
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.compose.material3.AlertDialog
-import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.platform.LocalContext
-import android.Manifest
-import java.io.File
+import com.example.musicfinder.data.repository.RecognizeAudio
 
 @Composable
 fun RecordAudioWrapper(permissions:Array<String>, onPermissionGranted: () -> Unit) {
@@ -82,18 +78,19 @@ object RecordAudio  {
         }
     }
 
-    private fun stopRecording() {
+    private fun stopRecording(fileName: String,context: Context) {
         recorder?.apply {
             stop()
             release()
+            RecognizeAudio.run(fileName,context)
         }
         recorder = null
     }
 
-     fun onRecord(start: Boolean,fileName:String) = if (start) {
+     fun onRecord(start: Boolean,fileName:String,context: Context) = if (start) {
         startRecording(fileName = fileName)
     } else {
-        stopRecording()
+        stopRecording(fileName,context)
      }
 
 
