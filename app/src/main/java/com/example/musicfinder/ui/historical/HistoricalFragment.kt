@@ -18,11 +18,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
+import com.example.musicfinder.data.model.AudDResponseModels.SongResult
 import com.example.musicfinder.data.model.Song
 import com.example.musicfinder.data.repository.SongRepository
 import com.example.musicfinder.ui.historical.DetailedCard
 import com.example.musicfinder.ui.historical.ListCardSong
 import com.example.musicfinder.ui.navigation.AppNavigation
+import com.google.gson.Gson
 
 
 //ya no lo uso
@@ -53,16 +55,20 @@ fun HistoricalBody(padding : PaddingValues) {
         val context = LocalContext.current
         val repository = SongRepository(context)
 
-//        repository.clearAll()
-//
-//        val song = Song( title = "Warriors",artist="Imagine Dragons",album="Smoke+Mirrors",url_image="https://i.scdn.co/image/b039549954758689330893bd4a92585092a81cf5",url_spotify="https://open.spotify.com/intl-es/track/6Q2JimwoGgG5W9HdmH1hmq")
-//        val songs = listOf(song,song,song,song,song,song,song,song,song,song,song,song,song,song,song,song,song,song,song,song,song)
-//        repository.saveSongs(key="Songs",songs)
-
-        val savedSongs = repository.getSongs(key="Songs")
+        val savedSongs = repository.getSongResults(key="Songs")
         Log.d("Songs", "Songs: $savedSongs")
-        val emptySong = Song()
-        var selectedSong = remember { mutableStateOf<Song?>(null) } // Estado para la canción seleccionada
+        val emptySong = SongResult(
+            album = null,
+            apple_music = null,
+            artist = null,
+            label = null,
+            release_date = null,
+            song_link = null,
+            spotify = null,
+            timecode = null,
+            title = null
+        )
+        var selectedSong = remember { mutableStateOf<SongResult?>(null) } // Estado para la canción seleccionada
         var isVisible = remember { mutableStateOf(false) }
         LazyColumn() {
             items(savedSongs) { song ->

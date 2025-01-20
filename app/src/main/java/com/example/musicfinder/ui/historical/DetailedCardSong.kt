@@ -39,9 +39,10 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.widget.Toast
 import androidx.compose.ui.platform.LocalContext
+import com.example.musicfinder.data.model.AudDResponseModels.SongResult
 
 @Composable
-fun DetailedCard(song:Song) {
+fun DetailedCard(song:SongResult) {
     val context = LocalContext.current
     ElevatedCard(
         elevation = CardDefaults.cardElevation(
@@ -59,7 +60,7 @@ fun DetailedCard(song:Song) {
                 horizontalAlignment = Alignment.CenterHorizontally,
                 modifier = Modifier.fillMaxSize()
             ){
-                ImageFromUrlSafe(song.url_image,200)
+                ImageFromUrlSafe(song.spotify?.album?.images?.get(0)?.url,200)
                 Column(
 
                 ){
@@ -85,7 +86,7 @@ fun DetailedCard(song:Song) {
                         fontSize = 18.sp
                     )
                     Text(
-                        text ="Date finded: "+ song.date_finded,
+                        text ="Release date: "+ song.release_date,
                         modifier = Modifier
                             .padding(start = 60.dp,5.dp),
                         textAlign = TextAlign.Left,
@@ -93,7 +94,7 @@ fun DetailedCard(song:Song) {
                     )
                     Row (modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.Center){
                         Button(onClick = {
-                            val uri = Uri.parse(song.url_spotify)
+                            val uri = Uri.parse(song.spotify?.album?.artists?.get(0)?.external_urls?.spotify)
                             try {
                                 val spotifyIntent = Intent(Intent.ACTION_VIEW, uri).apply {
                                     `package` = "com.spotify.music"
@@ -136,10 +137,10 @@ fun isSpotifyInstalled(context: Context): Boolean {
 
 
 
-@Preview(showBackground = true)
-@Composable
-fun PreviewCard(){
-    var song = Song( title = "Warriors",artist="Imagine Dragons",album="Warriors",url_image="https://i.scdn.co/image/b039549954758689330893bd4a92585092a81cf5",url_spotify="https://open.spotify.com/artist/53XhwfbYqKCa1cC15pYq2q", date_finded = "2-2-2024")
-    DetailedCard(song.copy(url_image = ""))
-}
+//@Preview(showBackground = true)
+//@Composable
+//fun PreviewCard(){
+//    var song = Song( title = "Warriors",artist="Imagine Dragons",album="Warriors",url_image="https://i.scdn.co/image/b039549954758689330893bd4a92585092a81cf5",url_spotify="https://open.spotify.com/artist/53XhwfbYqKCa1cC15pYq2q", date_finded = "2-2-2024")
+//    DetailedCard(song.copy(url_image = ""))
+//}
 
