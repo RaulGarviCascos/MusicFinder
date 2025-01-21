@@ -19,7 +19,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import com.example.musicfinder.data.model.AudDResponseModels.SongResult
-import com.example.musicfinder.data.model.Song
 import com.example.musicfinder.data.repository.SongRepository
 import com.example.musicfinder.ui.historical.DetailedCard
 import com.example.musicfinder.ui.historical.ListCardSong
@@ -56,7 +55,7 @@ fun HistoricalBody(padding : PaddingValues) {
         val repository = SongRepository(context)
 
         val savedSongs = repository.getSongResults(key="Songs")
-        Log.d("Songs", "Songs: $savedSongs")
+
         val emptySong = SongResult(
             album = null,
             apple_music = null,

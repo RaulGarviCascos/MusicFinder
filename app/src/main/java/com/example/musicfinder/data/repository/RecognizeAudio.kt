@@ -13,42 +13,41 @@ import java.io.File
 import androidx.security.crypto.EncryptedSharedPreferences
 import androidx.security.crypto.MasterKeys
 import com.example.musicfinder.data.model.AudDResponseModels.SongResult
+import kotlinx.coroutines.withContext
 
 object RecognizeAudio {
 
-    fun run(filePath: String,context: Context) {
+    suspend fun run(filePath: String,context: Context): SongResult? {
 
-        val securePrefs = getSecurePreferences(context)
-        val apiToken = securePrefs.getString("api_token", null)
 
-        val tokenBody = apiToken?.let { RequestBody.create("text/plain".toMediaTypeOrNull(), it) }
-
-        val file = File(filePath)
-
-        val requestBody = RequestBody.create("audio/mp4".toMediaTypeOrNull(), file)
-        val filePart = MultipartBody.Part.createFormData("file", file.name, requestBody)
-        val returnParams = RequestBody.create("text/plain".toMediaTypeOrNull(),"spotify")
-        CoroutineScope(Dispatchers.IO).launch {
+            val securePrefs = getSecurePreferences(context)
+            val apiToken = securePrefs.getString("api_token", null)
+            val tokenBody =  apiToken?.let { RequestBody.create("text/plain".toMediaTypeOrNull(), it) }
+            val file = File(filePath)
+            val requestBody = RequestBody.create("audio/mp4".toMediaTypeOrNull(), file)
+            val filePart = MultipartBody.Part.createFormData("file", file.name, requestBody)
+            val returnParams = RequestBody.create("text/plain".toMediaTypeOrNull(), "spotify")
             try {
-
-                val response = tokenBody?.let { ApiClient.apiService.recognizeSong(it, filePart,returnParams) }
-                if (response!=null){
-                    if (response.isSuccessful && response.body()?.result != null) {
+                val response = tokenBody?.let { ApiClient.apiService.recognizeSong(it, filePart, returnParams) }
+                    if (response != null && response.isSuccessful && response.body()?.result != null) {
                         val result = response.body()
-                        println("Recognition Success: $result")
+                        //add song
                         val repository = SongRepository(context)
-                        var songs : List<SongResult?> = repository.getSongResults("Songs")
-                        repository.saveSongResult("Songs", songs+result!!.result)
+                        var songs: List<SongResult?> = repository.getSongResults("Songs")
+                        repository.saveSongResult("Songs", songs + result!!.result)
+                        return result.result
                     } else {
-                        println("Recognition Failed: ${response.errorBody()?.string()}")
-                    }
-                }
+                        println("Recognition Failed: ${response?.errorBody()?.string()}")
 
+                    }
             } catch (e: Exception) {
                 println("Error: ${e.message}")
+
             }
+        return null
         }
-    }
+
+
 
    fun getSecurePreferences(context: Context): SharedPreferences {
         val masterKeyAlias = MasterKeys.getOrCreate(MasterKeys.AES256_GCM_SPEC)
@@ -61,5 +60,6 @@ object RecognizeAudio {
             EncryptedSharedPreferences.PrefValueEncryptionScheme.AES256_GCM
         )
     }
+
 }
 

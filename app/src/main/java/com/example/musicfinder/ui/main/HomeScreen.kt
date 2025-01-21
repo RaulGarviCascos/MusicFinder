@@ -36,15 +36,22 @@ import androidx.compose.foundation.gestures.detectHorizontalDragGestures
 import com.example.musicfinder.ui.navigation.AppNavigation
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.animation.core.Animatable
+import androidx.compose.animation.scaleIn
+import androidx.compose.animation.scaleOut
+import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.PlayArrow
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.unit.IntOffset
 import kotlin.math.roundToInt
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.platform.LocalContext
+import com.example.musicfinder.data.model.AudDResponseModels.SongResult
+import com.example.musicfinder.ui.historical.DetailedCard
 import com.example.musicfinder.ui.record.RecordAudio
 import com.example.musicfinder.ui.record.RecordAudioWrapper
 
@@ -142,12 +149,11 @@ fun PlayButton(onClick: () -> Unit){
 
 }
 @Composable
-fun RecordButton(onClick :() -> Unit){
+fun RecordButton(onClick : () -> Unit){
         Button(
             onClick = onClick,
             shape = CircleShape,
             colors =  ButtonDefaults.buttonColors(containerColor = Color.Transparent)
-
         ) {
             Image(
                 painter = painterResource(id = R.drawable.ic_button_finder), // Tu imagen personalizada
@@ -168,15 +174,21 @@ fun MainBody(topPadding : PaddingValues) {
         Manifest.permission.RECORD_AUDIO,
         Manifest.permission.READ_MEDIA_AUDIO
     )
+    val justPressed = remember { mutableStateOf(false) }
+    val song = remember { mutableStateOf<SongResult?>(null) }
+    val songIsShowing = remember { mutableStateOf(true) }
 
     // Solicitar permisos antes de interactuar
     RecordAudioWrapper(permissions) {
         permissionGranted.value = true
     }
-    var listenText = if (record.value){
-        "Listening..."
+    var listenText = ""
+
+    if (record.value){
+        listenText = "Listening..."
+
     }else{
-        "Press to listen"
+        listenText = "Press to listen"
     }
 
     Box(
@@ -184,43 +196,102 @@ fun MainBody(topPadding : PaddingValues) {
             .fillMaxSize()
             .padding(topPadding),
     ) {
-        Column(
-            modifier = Modifier
-            .fillMaxSize()
-            .padding(16.dp),
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.Center)
-        {
-            RecordButton(onClick = {record.value = !record.value
-                RecordAudio.onRecord(record.value, fileName = fileName,context)})
 
-            Text(
-                text = listenText,
-                style = TextStyle(fontSize = 20.sp,
-                    color = Color.Cyan,
-                    fontWeight =  FontWeight.Bold,
-                    shadow = Shadow(
-                        color = Color.Black,
-                        offset = Offset(-4f, 4f),
-                        blurRadius = 2f
-                    ))
+        if (song.value!=null && songIsShowing.value){
+            showSong(song.value,songIsShowing)
+        }else{
+            Column(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(16.dp),
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.Center
             )
-            PlayButton(
-                onClick = {
-                    play.value = !play.value
-                    if (play.value) {
-                        RecordAudio.startPlaying(fileName) {
-                            //accion que se ejecutara cuando el completion termine
-                            play.value = false
-                        }
-                    } else {
-                        RecordAudio.stopPlaying()
-                    }
+            {
+
+                RecordButton(onClick = {
+                    record.value = !record.value
+                    justPressed.value = true
                 })
+
+                if (justPressed.value) {
+                    RecordAudio.onRecord(record.value, fileName = fileName, context, song)
+                    justPressed.value = false
+                }
+
+                Text(
+                    text = listenText,
+                    style = TextStyle(
+                        fontSize = 20.sp,
+                        color = Color.Cyan,
+                        fontWeight = FontWeight.Bold,
+                        shadow = Shadow(
+                            color = Color.Black,
+                            offset = Offset(-4f, 4f),
+                            blurRadius = 2f
+                        )
+                    )
+                )
+                PlayButton(
+                    onClick = {
+                        play.value = !play.value
+                        if (play.value) {
+                            RecordAudio.startPlaying(fileName) {
+                                //accion que se ejecutara cuando el completion termine
+                                play.value = false
+                            }
+                        } else {
+                            RecordAudio.stopPlaying()
+                        }
+                    })
+
+            }
         }
 
     }
 
+}
+@Composable
+fun showSong(newSong : SongResult?,songIsShowing:MutableState<Boolean>){
+
+    val emptySong = SongResult(
+        album = null,
+        apple_music = null,
+        artist = null,
+        label = null,
+        release_date = null,
+        song_link = null,
+        spotify = null,
+        timecode = null,
+        title = null
+    )
+    if(songIsShowing.value){
+        Box(
+            contentAlignment = Alignment.Center,
+            modifier = Modifier
+                .fillMaxSize()
+                .background(Color.Black.copy(alpha = 0.8f))
+                .clickable {
+                    songIsShowing.value = !songIsShowing.value
+                } // Cierra el detalle al hacer clic fuera
+        ) {
+
+        }
+    }
+    AnimatedVisibility(
+        visible = songIsShowing.value,
+        enter = scaleIn(animationSpec = tween(durationMillis = 500)),
+        exit = scaleOut(animationSpec = tween(durationMillis = 500))
+    ) {
+        Box(
+            contentAlignment = Alignment.Center,
+            modifier = Modifier
+                .fillMaxSize()
+        ) {
+            DetailedCard(song = newSong?:emptySong)
+
+        }
+    }
 }
 
 @Preview(showBackground = true)
