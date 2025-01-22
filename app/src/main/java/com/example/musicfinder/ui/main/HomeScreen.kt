@@ -51,7 +51,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.platform.LocalContext
 import com.example.musicfinder.data.model.AudDResponseModels.SongResult
-import com.example.musicfinder.ui.historical.DetailedCard
+import com.example.musicfinder.ui.historical.DetailedCardSong
 import com.example.musicfinder.ui.record.RecordAudio
 import com.example.musicfinder.ui.record.RecordAudioWrapper
 
@@ -198,7 +198,19 @@ fun MainBody(topPadding : PaddingValues) {
     ) {
 
         if (song.value!=null && songIsShowing.value){
-            showSong(song.value,songIsShowing)
+            val emptySong = SongResult(
+                album = null,
+                apple_music = null,
+                artist = null,
+                label = null,
+                release_date = null,
+                song_link = null,
+                spotify = null,
+                timecode = null,
+                title = null
+            )
+            val detailedCard = DetailedCardSong()
+            detailedCard.showDetailCard(song= song.value?:emptySong,songIsShowing)
         }else{
             Column(
                 modifier = Modifier
@@ -251,48 +263,7 @@ fun MainBody(topPadding : PaddingValues) {
     }
 
 }
-@Composable
-fun showSong(newSong : SongResult?,songIsShowing:MutableState<Boolean>){
 
-    val emptySong = SongResult(
-        album = null,
-        apple_music = null,
-        artist = null,
-        label = null,
-        release_date = null,
-        song_link = null,
-        spotify = null,
-        timecode = null,
-        title = null
-    )
-    if(songIsShowing.value){
-        Box(
-            contentAlignment = Alignment.Center,
-            modifier = Modifier
-                .fillMaxSize()
-                .background(Color.Black.copy(alpha = 0.8f))
-                .clickable {
-                    songIsShowing.value = !songIsShowing.value
-                } // Cierra el detalle al hacer clic fuera
-        ) {
-
-        }
-    }
-    AnimatedVisibility(
-        visible = songIsShowing.value,
-        enter = scaleIn(animationSpec = tween(durationMillis = 500)),
-        exit = scaleOut(animationSpec = tween(durationMillis = 500))
-    ) {
-        Box(
-            contentAlignment = Alignment.Center,
-            modifier = Modifier
-                .fillMaxSize()
-        ) {
-            DetailedCard(song = newSong?:emptySong)
-
-        }
-    }
-}
 
 @Preview(showBackground = true)
 @Composable

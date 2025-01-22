@@ -20,7 +20,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import com.example.musicfinder.data.model.AudDResponseModels.SongResult
 import com.example.musicfinder.data.repository.SongRepository
-import com.example.musicfinder.ui.historical.DetailedCard
+import com.example.musicfinder.ui.historical.DetailedCardSong
 import com.example.musicfinder.ui.historical.ListCardSong
 import com.example.musicfinder.ui.navigation.AppNavigation
 import com.google.gson.Gson
@@ -77,36 +77,15 @@ fun HistoricalBody(padding : PaddingValues) {
                         isVisible.value=true
                     },
 
-
                 ) {
                     ListCardSong(song)
                 }
             }
         }
-        if(isVisible.value){
-            Box(
-                contentAlignment = Alignment.Center,
-                modifier = Modifier
-                    .fillMaxSize()
-                    .background(Color.Black.copy(alpha = 0.8f))
-                    .clickable { isVisible.value = !isVisible.value } // Cierra el detalle al hacer clic fuera
-            ) {
+        val detailedCard = DetailedCardSong()
+        detailedCard.showDetailCard(song= selectedSong.value?:emptySong,isVisible)
+        
 
-            }
-        }
-        AnimatedVisibility(
-            visible = isVisible.value,
-            enter = scaleIn(animationSpec = tween(durationMillis = 500)),
-            exit = scaleOut(animationSpec = tween(durationMillis = 500))
-        ) {
-            Box(
-                contentAlignment = Alignment.Center,
-                modifier = Modifier
-                    .fillMaxSize()
-            ) {
-                DetailedCard(song = selectedSong.value?:emptySong)
-            }
-        }
 
 
 

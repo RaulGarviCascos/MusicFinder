@@ -26,7 +26,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import com.example.musicfinder.data.model.AudDResponseModels.SongResult
 import com.example.musicfinder.data.repository.RecognizeAudio
-import com.example.musicfinder.ui.historical.DetailedCard
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -102,7 +101,6 @@ object RecordAudio  {
         recorder?.apply {
             stop()
             release()
-
             CoroutineScope(Dispatchers.Main).launch{
                 songResult.value = RecognizeAudio.run(fileName,context)
             }

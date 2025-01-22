@@ -38,22 +38,34 @@ import android.net.Uri
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.widget.Toast
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.scaleIn
+import androidx.compose.animation.scaleOut
+import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
+import androidx.compose.runtime.MutableState
 import androidx.compose.ui.platform.LocalContext
 import com.example.musicfinder.data.model.AudDResponseModels.SongResult
 
-@Composable
-fun DetailedCard(song:SongResult) {
-    val context = LocalContext.current
-    ElevatedCard(
-        elevation = CardDefaults.cardElevation(
-            defaultElevation = 6.dp
-        ),
-        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceVariant),
-        modifier = Modifier
-            .width(300.dp)
-            .height(400.dp)
-            .padding(5.dp)
-    ) {
+
+class DetailedCardSong {
+    var song:SongResult? = null
+
+    @Composable
+    fun CreateDetailedCard() {
+        val song = this.song!!
+        val context = LocalContext.current
+        ElevatedCard(
+            elevation = CardDefaults.cardElevation(
+                defaultElevation = 6.dp
+            ),
+            colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceVariant),
+            modifier = Modifier
+                .width(300.dp)
+                .height(400.dp)
+                .padding(5.dp)
+        ) {
 
             Column (
                 verticalArrangement = Arrangement.Center,
@@ -124,15 +136,46 @@ fun DetailedCard(song:SongResult) {
             }
         }
 
-}
-fun isSpotifyInstalled(context: Context): Boolean {
-    val packageManager = context.packageManager
-    return try {
-        packageManager.getPackageInfo("com.spotify.music", 0)
-        true
-    } catch (e: PackageManager.NameNotFoundException) {
-        false
     }
+    fun isSpotifyInstalled(context: Context): Boolean {
+        val packageManager = context.packageManager
+        return try {
+            packageManager.getPackageInfo("com.spotify.music", 0)
+            true
+        } catch (e: PackageManager.NameNotFoundException) {
+            false
+        }
+    }
+
+    @Composable
+    fun showDetailCard(song:SongResult,isVisible: MutableState<Boolean>){
+        this.song=song
+        if(isVisible.value){
+            Box(
+                contentAlignment = Alignment.Center,
+                modifier = Modifier
+                    .fillMaxSize()
+                    .background(Color.Black.copy(alpha = 0.8f))
+                    .clickable { isVisible.value = !isVisible.value } // Cierra el detalle al hacer clic fuera
+            ) {
+
+            }
+        }
+        AnimatedVisibility(
+            visible = isVisible.value,
+            enter = scaleIn(animationSpec = tween(durationMillis = 500)),
+            exit = scaleOut(animationSpec = tween(durationMillis = 500))
+        ) {
+            Box(
+                contentAlignment = Alignment.Center,
+                modifier = Modifier
+                    .fillMaxSize()
+            ) {
+                CreateDetailedCard()
+            }
+        }
+    }
+
 }
 
 
