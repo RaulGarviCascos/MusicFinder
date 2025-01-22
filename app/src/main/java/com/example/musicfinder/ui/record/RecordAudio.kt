@@ -28,6 +28,7 @@ import com.example.musicfinder.data.model.AudDResponseModels.SongResult
 import com.example.musicfinder.data.repository.RecognizeAudio
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 @Composable
@@ -54,6 +55,8 @@ object RecordAudio  {
     private var player: MediaPlayer? = null
     private var recorder: MediaRecorder? = null
     private val LOG_TAG = "AudioRecordTest"
+    private var maxRetries = 3
+    private var retryCount = 0
 
     fun startPlaying(fileName:String, onCompletion: () -> Unit) {
 
@@ -78,7 +81,7 @@ object RecordAudio  {
         player = null
     }
 
-    private fun startRecording(fileName:String) {
+    private fun startRecording(fileName:String,context: Context,songResult: MutableState<SongResult?>,listening: MutableState<Boolean>) {
         recorder = MediaRecorder().apply {
             setAudioSource(MediaRecorder.AudioSource.MIC)
             setOutputFormat(MediaRecorder.OutputFormat.MPEG_4)
@@ -89,20 +92,36 @@ object RecordAudio  {
 
             try {
                 prepare()
+                CoroutineScope(Dispatchers.Main).launch {
+                    delay(3500) // 3.5 segundos
+                    stopRecording(fileName, context,songResult,listening)
+                }
+                start()
             } catch (e: IOException) {
                 Log.e(LOG_TAG, "prepare() failed: ${e.message}")
             }
-            start()
+
         }
     }
 
 
-    private fun stopRecording(fileName: String, context: Context,songResult: MutableState<SongResult?>) {
+    private fun stopRecording(fileName: String, context: Context,songResult: MutableState<SongResult?>,listening: MutableState<Boolean>) {
         recorder?.apply {
             stop()
             release()
             CoroutineScope(Dispatchers.Main).launch{
-                songResult.value = RecognizeAudio.run(fileName,context)
+                val result = RecognizeAudio.run(fileName,context)
+                if(result != null){
+                    songResult.value = result
+                    listening.value=false
+                }else if(retryCount<maxRetries){
+                    retryCount++
+                    startRecording(fileName,context, songResult,listening)
+                }else{
+                    println("Max retries reached. Stopping attempts.")
+                    listening.value=false
+                }
+
             }
         }
         recorder = null
@@ -110,13 +129,10 @@ object RecordAudio  {
 
 
 
-     fun onRecord(start: Boolean,fileName:String,context: Context,songResult: MutableState<SongResult?>) = if (start) {
-        startRecording(fileName = fileName)
-    } else {
-        stopRecording(fileName,context,songResult)
-     }
-
-
-
+     fun onRecord(listening: MutableState<Boolean>,fileName:String,context: Context,songResult: MutableState<SongResult?>) = if (listening.value) {
+             startRecording(fileName = fileName,context,songResult,listening)
+         } else {
+             stopRecording(fileName,context,songResult,listening)
+         }
 
 }

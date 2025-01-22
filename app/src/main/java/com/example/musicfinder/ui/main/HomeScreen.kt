@@ -165,7 +165,7 @@ fun RecordButton(onClick : () -> Unit){
 
 @Composable
 fun MainBody(topPadding : PaddingValues) {
-    val record = remember { mutableStateOf(false) }
+    val listening = remember { mutableStateOf(false) }
     val play = remember { mutableStateOf(false) }
     val permissionGranted = remember { mutableStateOf(false) }
     val context = LocalContext.current
@@ -184,7 +184,7 @@ fun MainBody(topPadding : PaddingValues) {
     }
     var listenText = ""
 
-    if (record.value){
+    if (listening.value){
         listenText = "Listening..."
 
     }else{
@@ -222,12 +222,12 @@ fun MainBody(topPadding : PaddingValues) {
             {
 
                 RecordButton(onClick = {
-                    record.value = !record.value
+                    listening.value = !listening.value
                     justPressed.value = true
                 })
 
                 if (justPressed.value) {
-                    RecordAudio.onRecord(record.value, fileName = fileName, context, song)
+                    RecordAudio.onRecord(listening, fileName = fileName, context, song)
                     justPressed.value = false
                 }
 
