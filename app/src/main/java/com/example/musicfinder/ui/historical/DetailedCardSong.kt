@@ -44,9 +44,19 @@ import androidx.compose.animation.scaleIn
 import androidx.compose.animation.scaleOut
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.defaultMinSize
+import androidx.compose.foundation.layout.wrapContentHeight
+import androidx.compose.material3.Divider
 import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.text.font.FontWeight
+import com.example.musicfinder.data.model.AudDResponseModels.Album
+import com.example.musicfinder.data.model.AudDResponseModels.ExternalUrlsXXX
+import com.example.musicfinder.data.model.AudDResponseModels.Image
 import com.example.musicfinder.data.model.AudDResponseModels.SongResult
+import com.example.musicfinder.data.model.AudDResponseModels.Spotify
 
 
 class DetailedCardSong {
@@ -63,8 +73,9 @@ class DetailedCardSong {
             colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceVariant),
             modifier = Modifier
                 .width(300.dp)
-                .height(400.dp)
+                .defaultMinSize(minHeight = 400.dp)
                 .padding(5.dp)
+                .wrapContentHeight(unbounded = true)
         ) {
 
             Column (
@@ -77,36 +88,33 @@ class DetailedCardSong {
 
                 ){
                     Text(
-                        text = "Title: "+song.title,
+                        text = ""+song.title,
                         modifier = Modifier
-                            .padding(start = 60.dp,5.dp),
+                            .padding(start = 20.dp,5.dp),
                         textAlign = TextAlign.Left,
-                        fontSize = 23.sp
+                        fontSize = 20.sp,
+                        fontWeight = FontWeight.Bold
                     )
-                    Text(
-                        text ="Artist: "+ song.artist,
-                        modifier = Modifier
-                            .padding(start = 60.dp,5.dp),
-                        textAlign = TextAlign.Left,
-                        fontSize = 18.sp
-                    )
-                    Text(
-                        text ="Album: "+ song.album,
-                        modifier = Modifier
-                            .padding(start = 60.dp,5.dp),
-                        textAlign = TextAlign.Left,
-                        fontSize = 18.sp
-                    )
-                    Text(
-                        text ="Release date: "+ song.release_date,
-                        modifier = Modifier
-                            .padding(start = 60.dp,5.dp),
-                        textAlign = TextAlign.Left,
-                        fontSize = 18.sp
-                    )
+                    val textCard = listOf("Artist: ", "Album: ", "Release date: ")
+                    val textSong = listOf(song.artist,song.album,song.release_date)
+                    for (i in textCard.indices){
+                        Divider(
+                            color = Color.Gray,
+                            thickness = 1.dp,
+                            modifier = Modifier.padding(horizontal = 16.dp, vertical = 5.dp)
+                        )
+                        Text(
+                            text =textCard[i]+ textSong[i],
+                            modifier = Modifier
+                                .padding(start = 20.dp,5.dp),
+                            textAlign = TextAlign.Left,
+                            fontSize = 18.sp
+                        )
+                    }
+
                     Row (modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.Center){
                         Button(onClick = {
-                            val uri = Uri.parse(song.spotify?.album?.artists?.get(0)?.external_urls?.spotify)
+                            val uri = Uri.parse(song.spotify?.external_urls?.spotify)
                             try {
                                 val spotifyIntent = Intent(Intent.ACTION_VIEW, uri).apply {
                                     `package` = "com.spotify.music"
@@ -180,10 +188,58 @@ class DetailedCardSong {
 
 
 
-//@Preview(showBackground = true)
-//@Composable
-//fun PreviewCard(){
-//    var song = Song( title = "Warriors",artist="Imagine Dragons",album="Warriors",url_image="https://i.scdn.co/image/b039549954758689330893bd4a92585092a81cf5",url_spotify="https://open.spotify.com/artist/53XhwfbYqKCa1cC15pYq2q", date_finded = "2-2-2024")
-//    DetailedCard(song.copy(url_image = ""))
-//}
+@Preview(showBackground = true)
+@Composable
+fun PreviewCard(){
+    val image = Image(height = 640, url="https://i.scdn.co/image/d3acaeb069f37d8e257221f7224c813c5fa6024e", width = 640)
+    val images = listOf (image)
+    val album = Album(
+        images = images,
+        album_type = null,
+        artists = null,
+        available_markets = null,
+        external_urls = null,
+        href = null,
+        id = null,
+        name = null,
+        release_date = null,
+        release_date_precision =null,
+        total_tracks = null,
+        type = null,
+        uri = null
+    )
+    val spoty = Spotify(
+        external_urls = ExternalUrlsXXX(spotify = "https://open.spotify.com/track/1lgN0A2Vki2FTON5PYq42m"),
+        album = album,
+        artists = null,
+        available_markets = null,
+        disc_number = null,
+        duration_ms = null,
+        explicit = null,
+        external_ids = null,
+        href = null,
+        id = null,
+        is_local = null,
+        name = null,
+        popularity = null,
+        track_number = null,
+        type = null,
+        uri = null
+    )
+    val song = SongResult(
+        title = "Warriors",
+        artist = "Imagine Dragons",
+        album = "Warriors",
+        release_date = "2-2-2024",
+        apple_music = null,
+        label = null,
+        song_link = null,
+        spotify = spoty,
+        timecode = null
+    )
+    val isVisible = remember { mutableStateOf(true) }
+    val card =  DetailedCardSong()
+    card.showDetailCard(song,isVisible)
+
+}
 
