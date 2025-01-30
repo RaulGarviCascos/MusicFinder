@@ -58,9 +58,11 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.platform.LocalContext
 import com.example.musicfinder.data.model.AudDResponseModels.SongResult
+import com.example.musicfinder.ui.animations.SlideContent
 import com.example.musicfinder.ui.historical.DetailedCardSong
 import com.example.musicfinder.ui.record.RecordAudio
 import com.example.musicfinder.ui.record.RecordAudioWrapper
+import com.example.musicfinder.ui.record.RecordButton
 import kotlinx.coroutines.delay
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
@@ -91,15 +93,15 @@ fun MainScreen() {
                     }
             ) {
                 BackGround()
-                AnimatedContent(
+                SlideContent(
                     visible = isListen.value,
                     topPadding = topPadding,
                     enterDirection = -1
                 ) {
-                    MainBody(it)
+                    HomeBody(it)
                 }
 
-                AnimatedContent(
+                SlideContent(
                     visible = isHistorical.value,
                     topPadding = topPadding,
                     enterDirection = 1
@@ -124,164 +126,10 @@ fun MainScreen() {
         }
     )
 }
-@Composable
-fun AnimatedContent(visible:Boolean,topPadding: PaddingValues, enterDirection: Int, content: @Composable (PaddingValues) -> Unit){
-    AnimatedVisibility(
-        visible = visible,
-        enter =
-        slideInHorizontally(animationSpec = tween(durationMillis = 200)) { fullWidth ->
-            fullWidth / 3*enterDirection
-        } +
-                fadeIn(
-                    animationSpec = tween(durationMillis = 200)
-                ),
-        exit =
-        slideOutHorizontally(animationSpec = spring(stiffness = Spring.StiffnessHigh)) {
-            200*enterDirection
-        } + fadeOut()
-    ) {
-       content(topPadding)
-    }
-}
-
-@Composable
-fun RecordButton(onClick : () -> Unit){
-        Button(
-            onClick = onClick,
-            shape = CircleShape,
-            colors =  ButtonDefaults.buttonColors(containerColor = Color.Transparent)
-        ) {
-            Image(
-                painter = painterResource(id = R.drawable.ic_button_finder),
-                contentDescription = "Icono personalizado",
-                modifier = Modifier.size(200.dp)
-            )
-
-        }
-}
-@Composable
-fun ListeningAnimation(isListening: Boolean) {
-    val infiniteTransition = rememberInfiniteTransition()
-
-    val scale by infiniteTransition.animateFloat(
-        initialValue = 0.5f,
-        targetValue = 2.5f,
-        animationSpec = infiniteRepeatable(
-            animation = tween(durationMillis = 1000, easing = LinearEasing),
-            repeatMode = RepeatMode.Restart
-        )
-    )
-
-    val blur by infiniteTransition.animateFloat(
-        initialValue = 1f,
-        targetValue = 0f,
-        animationSpec = infiniteRepeatable(
-            animation = tween(durationMillis = 1000, easing = LinearEasing),
-            repeatMode = RepeatMode.Restart
-        )
-    )
-
-    Box(
-        contentAlignment = Alignment.Center,
-        modifier = Modifier.fillMaxSize()
-    ) {
-        if (isListening) {
-            Canvas(modifier = Modifier.size(200.dp)) {
-                drawCircle(
-                    color = Color.Cyan.copy(alpha = blur),
-                    radius = size.minDimension / 2 * scale
-                )
-            }
-        }
-    }
-}
-
-@Composable
-fun MainBody(topPadding : PaddingValues) {
-    val listening = remember { mutableStateOf(false) }
-    val permissionGranted = remember { mutableStateOf(false) }
-    val context = LocalContext.current
-    val fileName = "${context.externalCacheDir?.absolutePath}/audiorecordtest.mp4"
-    val permissions = arrayOf(
-        Manifest.permission.RECORD_AUDIO,
-        Manifest.permission.READ_MEDIA_AUDIO
-    )
-    val justPressed = remember { mutableStateOf(false) }
-    val song = remember { mutableStateOf<SongResult?>(null) }
-    val songIsShowing = remember { mutableStateOf(true) }
-
-    // Solicitar permisos antes de interactuar
-    RecordAudioWrapper(permissions) {
-        permissionGranted.value = true
-    }
-    var listenText = if (listening.value){
-        "Listening..."
-    }else{
-         "Press to listen"
-    }
 
 
-    Box(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(topPadding),
-    ) {
 
-        if (song.value!=null && songIsShowing.value){
-            val emptySong = SongResult(
-                album = null,
-                apple_music = null,
-                artist = null,
-                label = null,
-                release_date = null,
-                song_link = null,
-                spotify = null,
-                timecode = null,
-                title = null
-            )
-            val detailedCard = DetailedCardSong()
-            detailedCard.showDetailCard(song= song.value?:emptySong,songIsShowing)
-        }else{
-            ListeningAnimation(listening.value)
-            Column(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .padding(16.dp),
-                horizontalAlignment = Alignment.CenterHorizontally,
-                verticalArrangement = Arrangement.Center
-            )
-            {
 
-                RecordButton(onClick = {
-                    listening.value = !listening.value
-                    justPressed.value = true
-                })
-
-                if (justPressed.value) {
-                    RecordAudio.onRecord(listening, fileName = fileName, context, song)
-                    justPressed.value = false
-                }
-
-                Text(
-                    text = listenText,
-                    style = TextStyle(
-                        fontSize = 20.sp,
-                        color = Color.Cyan,
-                        fontWeight = FontWeight.Bold,
-                        shadow = Shadow(
-                            color = Color.Black,
-                            offset = Offset(-4f, 4f),
-                            blurRadius = 2f
-                        )
-                    )
-                )
-
-            }
-        }
-
-    }
-
-}
 
 
 @Preview(showBackground = true)
