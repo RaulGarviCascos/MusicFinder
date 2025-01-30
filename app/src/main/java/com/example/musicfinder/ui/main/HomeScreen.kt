@@ -36,8 +36,14 @@ import androidx.compose.foundation.gestures.detectHorizontalDragGestures
 import com.example.musicfinder.ui.navigation.AppNavigation
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.animation.core.Animatable
+import androidx.compose.animation.core.LinearEasing
+import androidx.compose.animation.core.RepeatMode
+import androidx.compose.animation.core.animateFloat
+import androidx.compose.animation.core.infiniteRepeatable
+import androidx.compose.animation.core.rememberInfiniteTransition
 import androidx.compose.animation.scaleIn
 import androidx.compose.animation.scaleOut
+import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.material.icons.Icons
@@ -49,11 +55,13 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.platform.LocalContext
 import com.example.musicfinder.data.model.AudDResponseModels.SongResult
 import com.example.musicfinder.ui.historical.DetailedCardSong
 import com.example.musicfinder.ui.record.RecordAudio
 import com.example.musicfinder.ui.record.RecordAudioWrapper
+import kotlinx.coroutines.delay
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
@@ -71,10 +79,10 @@ fun MainScreen() {
                         detectHorizontalDragGestures(
 
                             onHorizontalDrag = { change, dragAmount ->
-                                if (dragAmount > 15) { // Desliza a la derecha
+                                if (dragAmount > 15) {
                                     isListen.value = true
                                     isHistorical.value = false
-                                } else if (dragAmount < -15) { // Desliza a la izquierda
+                                } else if (dragAmount < -15) { 
                                     isListen.value = false
                                     isHistorical.value = true
                                 }
@@ -125,7 +133,6 @@ fun AnimatedContent(visible:Boolean,topPadding: PaddingValues, enterDirection: I
             fullWidth / 3*enterDirection
         } +
                 fadeIn(
-                    // Overwrites the default animation with tween
                     animationSpec = tween(durationMillis = 200)
                 ),
         exit =
@@ -138,17 +145,6 @@ fun AnimatedContent(visible:Boolean,topPadding: PaddingValues, enterDirection: I
 }
 
 @Composable
-fun PlayButton(onClick: () -> Unit){ 
-    IconButton(onClick = onClick) {
-        Icon(
-            imageVector = Icons.Filled.PlayArrow,
-            contentDescription = "Play",
-            tint = Color.White
-        )
-    }
-
-}
-@Composable
 fun RecordButton(onClick : () -> Unit){
         Button(
             onClick = onClick,
@@ -156,17 +152,53 @@ fun RecordButton(onClick : () -> Unit){
             colors =  ButtonDefaults.buttonColors(containerColor = Color.Transparent)
         ) {
             Image(
-                painter = painterResource(id = R.drawable.ic_button_finder), // Tu imagen personalizada
+                painter = painterResource(id = R.drawable.ic_button_finder),
                 contentDescription = "Icono personalizado",
                 modifier = Modifier.size(200.dp)
             )
+
         }
+}
+@Composable
+fun ListeningAnimation(isListening: Boolean) {
+    val infiniteTransition = rememberInfiniteTransition()
+
+    val scale by infiniteTransition.animateFloat(
+        initialValue = 0.5f,
+        targetValue = 2.5f,
+        animationSpec = infiniteRepeatable(
+            animation = tween(durationMillis = 1000, easing = LinearEasing),
+            repeatMode = RepeatMode.Restart
+        )
+    )
+
+    val blur by infiniteTransition.animateFloat(
+        initialValue = 1f,
+        targetValue = 0f,
+        animationSpec = infiniteRepeatable(
+            animation = tween(durationMillis = 1000, easing = LinearEasing),
+            repeatMode = RepeatMode.Restart
+        )
+    )
+
+    Box(
+        contentAlignment = Alignment.Center,
+        modifier = Modifier.fillMaxSize()
+    ) {
+        if (isListening) {
+            Canvas(modifier = Modifier.size(200.dp)) {
+                drawCircle(
+                    color = Color.Cyan.copy(alpha = blur),
+                    radius = size.minDimension / 2 * scale
+                )
+            }
+        }
+    }
 }
 
 @Composable
 fun MainBody(topPadding : PaddingValues) {
     val listening = remember { mutableStateOf(false) }
-    val play = remember { mutableStateOf(false) }
     val permissionGranted = remember { mutableStateOf(false) }
     val context = LocalContext.current
     val fileName = "${context.externalCacheDir?.absolutePath}/audiorecordtest.mp4"
@@ -182,14 +214,12 @@ fun MainBody(topPadding : PaddingValues) {
     RecordAudioWrapper(permissions) {
         permissionGranted.value = true
     }
-    var listenText = ""
-
-    if (listening.value){
-        listenText = "Listening..."
-
+    var listenText = if (listening.value){
+        "Listening..."
     }else{
-        listenText = "Press to listen"
+         "Press to listen"
     }
+
 
     Box(
         modifier = Modifier
@@ -212,6 +242,7 @@ fun MainBody(topPadding : PaddingValues) {
             val detailedCard = DetailedCardSong()
             detailedCard.showDetailCard(song= song.value?:emptySong,songIsShowing)
         }else{
+            ListeningAnimation(listening.value)
             Column(
                 modifier = Modifier
                     .fillMaxSize()
@@ -244,18 +275,6 @@ fun MainBody(topPadding : PaddingValues) {
                         )
                     )
                 )
-                PlayButton(
-                    onClick = {
-                        play.value = !play.value
-                        if (play.value) {
-                            RecordAudio.startPlaying(fileName) {
-                                //accion que se ejecutara cuando el completion termine
-                                play.value = false
-                            }
-                        } else {
-                            RecordAudio.stopPlaying()
-                        }
-                    })
 
             }
         }
