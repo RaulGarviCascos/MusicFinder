@@ -1,9 +1,11 @@
 package com.example.musicfinder.ui.common
 
+import SettingsAnimation
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -14,15 +16,18 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.sp
+import com.example.musicfinder.ui.settings.SettingsMenu
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun TopBar() {
-    // TopAppBar con fondo gris
+fun TopBar(menuIsVisible:MutableState<Boolean>,darkTheme:MutableState<Boolean>) {
     Box(
         modifier = Modifier
             .fillMaxWidth()
@@ -51,12 +56,21 @@ fun TopBar() {
                 }
             },
             navigationIcon = {
-                IconButton(onClick = { }) {
-                    Icon(
-                        imageVector = Icons.Filled.Menu,
-                        contentDescription = "Menu Icon",
-                        tint = Color.White
-                    )
+                IconButton(onClick = {menuIsVisible.value = !menuIsVisible.value }) {
+                    if(menuIsVisible.value){
+                        Icon(
+                            imageVector = Icons.Filled.ArrowBack,
+                            contentDescription = "Return",
+                            tint = Color.White
+                        )
+                    }else{
+                        Icon(
+                            imageVector = Icons.Filled.Menu,
+                            contentDescription = "Menu Icon",
+                            tint = Color.White
+                        )
+                    }
+
                 }
             },
             actions = {
@@ -70,5 +84,8 @@ fun TopBar() {
             }, modifier = Modifier.fillMaxWidth()
         )
     }
+
+
+
 }
 

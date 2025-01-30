@@ -1,4 +1,5 @@
 package com.example.musicfinder.ui.main
+import SettingsAnimation
 import android.Manifest
 import android.annotation.SuppressLint
 import androidx.compose.animation.AnimatedVisibility
@@ -63,6 +64,7 @@ import com.example.musicfinder.ui.historical.DetailedCardSong
 import com.example.musicfinder.ui.record.RecordAudio
 import com.example.musicfinder.ui.record.RecordAudioWrapper
 import com.example.musicfinder.ui.record.RecordButton
+import com.example.musicfinder.ui.settings.SettingsMenu
 import kotlinx.coroutines.delay
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
@@ -70,10 +72,13 @@ import kotlinx.coroutines.delay
 fun MainScreen() {
     val isListen = remember { mutableStateOf(true) }
     val isHistorical = remember { mutableStateOf(false) }
-
+    val menuSettings = remember { mutableStateOf(false) }
+    val darkTheme = remember { mutableStateOf(true) }
     Scaffold(
-        topBar = { TopBar() },
+
+                topBar = { TopBar(menuSettings,darkTheme) },
         content = { topPadding ->
+
             Box(
                 modifier = Modifier
                     .fillMaxSize()
@@ -108,6 +113,11 @@ fun MainScreen() {
                 ) {
                     HistoricalBody(it)
                 }
+                SlideContent(menuSettings.value, topPadding=topPadding, enterDirection = -1){
+                    SettingsMenu(darkTheme, it,onClick = {menuSettings.value = !menuSettings.value})
+                }
+
+
             }
         },
         bottomBar = {
