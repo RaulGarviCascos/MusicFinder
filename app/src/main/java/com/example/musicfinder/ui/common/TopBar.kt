@@ -1,9 +1,11 @@
 package com.example.musicfinder.ui.common
 
+import SettingsAnimation
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -14,6 +16,9 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -21,8 +26,7 @@ import androidx.compose.ui.unit.sp
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun TopBar() {
-    // TopAppBar con fondo gris
+fun TopBar(menuIsVisible:MutableState<Boolean>) {
     Box(
         modifier = Modifier
             .fillMaxWidth()
@@ -30,11 +34,7 @@ fun TopBar() {
     ) {
         TopAppBar(
             colors = TopAppBarDefaults.topAppBarColors(
-                containerColor = Color(
-                    red = 55,
-                    green = 53,
-                    blue = 66
-                )
+                containerColor = MaterialTheme.colorScheme.background
             ),
             title = {
                 Box(
@@ -45,18 +45,26 @@ fun TopBar() {
                     Text(
                         text = "Music Finder",
                         fontSize = 20.sp,
-                        color = Color.White,
+
                         style  = MaterialTheme.typography.titleLarge
                     )
                 }
             },
             navigationIcon = {
-                IconButton(onClick = { }) {
-                    Icon(
-                        imageVector = Icons.Filled.Menu,
-                        contentDescription = "Menu Icon",
-                        tint = Color.White
-                    )
+                IconButton(onClick = {menuIsVisible.value = !menuIsVisible.value }) {
+                    if(menuIsVisible.value){
+                        Icon(
+                            imageVector = Icons.Filled.ArrowBack,
+                            contentDescription = "Return",
+
+                        )
+                    }else{
+                        Icon(
+                            imageVector = Icons.Filled.Menu,
+                            contentDescription = "Menu Icon"
+                        )
+                    }
+
                 }
             },
             actions = {
@@ -64,11 +72,14 @@ fun TopBar() {
                     Icon(
                         imageVector = Icons.Filled.Person,
                         contentDescription = "Avatar Icon",
-                        tint = Color.White
+
                     )
                 }
             }, modifier = Modifier.fillMaxWidth()
         )
     }
+
+
+
 }
 
