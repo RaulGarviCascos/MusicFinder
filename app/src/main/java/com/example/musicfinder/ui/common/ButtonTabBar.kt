@@ -30,6 +30,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.ui.tooling.preview.Preview
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -44,7 +45,7 @@ fun ButtonTabBar(isThis: Boolean,icon_name : Int, label : String,onClick :() -> 
             colors =  ButtonDefaults.buttonColors(containerColor = Color.Transparent)
         ) {
 
-            var colorOn = Color.White
+            var colorOn = MaterialTheme.colorScheme.onBackground
             if ( isThis){
                 colorOn = Color(red = 149, green = 122, blue = 211)
             }
@@ -82,5 +83,5 @@ fun ButtonTabBar(isThis: Boolean,icon_name : Int, label : String,onClick :() -> 
 @Preview(showBackground = true)
 @Composable
 fun PreviewButton(){
-    ButtonTabBar(isThis = true, icon_name = R.drawable.ic_microphone, label = "Listen", onClick = {})
+    ButtonTabBar(isThis = false, icon_name = R.drawable.ic_microphone, label = "Listen", onClick = {})
 }

@@ -23,11 +23,10 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.sp
-import com.example.musicfinder.ui.settings.SettingsMenu
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun TopBar(menuIsVisible:MutableState<Boolean>,darkTheme:MutableState<Boolean>) {
+fun TopBar(menuIsVisible:MutableState<Boolean>) {
     Box(
         modifier = Modifier
             .fillMaxWidth()
@@ -35,11 +34,7 @@ fun TopBar(menuIsVisible:MutableState<Boolean>,darkTheme:MutableState<Boolean>) 
     ) {
         TopAppBar(
             colors = TopAppBarDefaults.topAppBarColors(
-                containerColor = Color(
-                    red = 55,
-                    green = 53,
-                    blue = 66
-                )
+                containerColor = MaterialTheme.colorScheme.background
             ),
             title = {
                 Box(
@@ -50,7 +45,7 @@ fun TopBar(menuIsVisible:MutableState<Boolean>,darkTheme:MutableState<Boolean>) 
                     Text(
                         text = "Music Finder",
                         fontSize = 20.sp,
-                        color = Color.White,
+
                         style  = MaterialTheme.typography.titleLarge
                     )
                 }
@@ -61,13 +56,12 @@ fun TopBar(menuIsVisible:MutableState<Boolean>,darkTheme:MutableState<Boolean>) 
                         Icon(
                             imageVector = Icons.Filled.ArrowBack,
                             contentDescription = "Return",
-                            tint = Color.White
+
                         )
                     }else{
                         Icon(
                             imageVector = Icons.Filled.Menu,
-                            contentDescription = "Menu Icon",
-                            tint = Color.White
+                            contentDescription = "Menu Icon"
                         )
                     }
 
@@ -78,7 +72,7 @@ fun TopBar(menuIsVisible:MutableState<Boolean>,darkTheme:MutableState<Boolean>) 
                     Icon(
                         imageVector = Icons.Filled.Person,
                         contentDescription = "Avatar Icon",
-                        tint = Color.White
+
                     )
                 }
             }, modifier = Modifier.fillMaxWidth()

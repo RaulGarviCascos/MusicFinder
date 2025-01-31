@@ -155,9 +155,12 @@ class DetailedCardSong {
                     .background(Color.Black.copy(alpha = 0.8f))
                     .clickable { isVisible.value = !isVisible.value }
             ) {
-                CardAnimation(isVisible,CreateDetailedCard())
+
             }
 
+        }
+        CardAnimation(isVisible.value){
+            CreateDetailedCard()
         }
 
     }

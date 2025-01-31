@@ -12,9 +12,9 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 
 @Composable
-fun CardAnimation(isVisible:MutableState<Boolean>, content: Unit) {
+fun CardAnimation(isVisible:Boolean, content: @Composable () -> Unit){
     AnimatedVisibility(
-        visible = isVisible.value,
+        visible = isVisible,
         enter = scaleIn(animationSpec = tween(durationMillis = 500)),
         exit = scaleOut(animationSpec = tween(durationMillis = 500))
     ) {
@@ -23,7 +23,7 @@ fun CardAnimation(isVisible:MutableState<Boolean>, content: Unit) {
             modifier = Modifier
                 .fillMaxSize()
         ) {
-            content
+            content()
         }
     }
 }

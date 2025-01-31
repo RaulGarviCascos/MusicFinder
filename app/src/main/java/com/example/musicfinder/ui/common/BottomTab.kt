@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -17,6 +18,8 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.musicfinder.R
 import com.example.musicfinder.ui.navigation.AppScreens
+import com.example.musicfinder.ui.theme.MusicFinderTheme
+import com.example.musicfinder.ui.theme.SpacialGray
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -24,7 +27,7 @@ fun BottomTabNavigation(isListen:Boolean,isList:Boolean,navController: NavContro
         Box(
             modifier = Modifier
                 .fillMaxWidth()
-                .background(Color(red = 55, green = 53, blue = 66))
+                .background(MaterialTheme.colorScheme.background)
         ) {
             Row(
                 modifier = Modifier.fillMaxWidth(),
@@ -47,7 +50,7 @@ fun BottomTab(isListen:Boolean,isList:Boolean,onClickListen :()-> Unit,onClickHi
     Box(
         modifier = Modifier
             .fillMaxWidth()
-            .background(Color(red = 55, green = 53, blue = 66))
+            .background(MaterialTheme.colorScheme.background)
     ) {
         Row(
             modifier = Modifier.fillMaxWidth(),
