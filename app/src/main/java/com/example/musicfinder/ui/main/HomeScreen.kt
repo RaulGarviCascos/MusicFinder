@@ -65,6 +65,7 @@ import com.example.musicfinder.ui.historical.DetailedCardSong
 import com.example.musicfinder.ui.record.RecordAudio
 import com.example.musicfinder.ui.record.RecordAudioWrapper
 import com.example.musicfinder.ui.record.RecordButton
+import com.example.musicfinder.ui.settings.ShowLogin
 import com.example.musicfinder.ui.settings.ShowSettingsMenu
 import kotlinx.coroutines.delay
 
@@ -77,10 +78,10 @@ fun MainScreen() {
     val isListen = remember { mutableStateOf(true) }
     val isHistorical = remember { mutableStateOf(false) }
     val menuSettings = remember { mutableStateOf(false) }
-
+    val menuLogin = remember { mutableStateOf(false) }
     Scaffold(
 
-                topBar = { TopBar(menuSettings) },
+                topBar = { TopBar(menuSettings,menuLogin) },
         content = { topPadding ->
 
             Box(
@@ -118,7 +119,7 @@ fun MainScreen() {
                     HistoricalBody(it)
                 }
                 ShowSettingsMenu(menuSettings,topPadding)
-
+                ShowLogin(menuLogin,topPadding)
 
 
             }
