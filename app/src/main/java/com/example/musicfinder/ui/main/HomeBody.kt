@@ -17,10 +17,12 @@ import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shadow
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.musicfinder.R
 import com.example.musicfinder.data.model.AudDResponseModels.SongResult
 import com.example.musicfinder.ui.animations.ListeningAnimation
 import com.example.musicfinder.ui.historical.DetailedCardSong
@@ -48,9 +50,9 @@ fun HomeBody(topPadding : PaddingValues) {
         permissionGranted.value = true
     }
     var listenText = if (listening.value){
-        "Listening..."
+        stringResource(id = R.string.listening)
     }else{
-        "Press to listen"
+        stringResource(id = R.string.press_listen)
     }
 
 

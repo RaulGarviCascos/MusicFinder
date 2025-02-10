@@ -12,6 +12,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
@@ -56,8 +57,8 @@ fun BottomTab(isListen:Boolean,isList:Boolean,onClickListen :()-> Unit,onClickHi
             modifier = Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.SpaceEvenly
         ) {
-            ButtonTabBar(isThis = isListen, icon_name = R.drawable.ic_microphone, label = "Listen", onClick = onClickListen)
-            ButtonTabBar(isThis = isList, icon_name = R.drawable.ic_list, label = "Historical", onClick =onClickHistorical)
+            ButtonTabBar(isThis = isListen, icon_name = R.drawable.ic_microphone, label = stringResource(id = R.string.bottom_bar_listen), onClick = onClickListen)
+            ButtonTabBar(isThis = isList, icon_name = R.drawable.ic_list, label = stringResource(id = R.string.bottom_bar_historical), onClick =onClickHistorical)
 
         }
     }

@@ -5,8 +5,10 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.isSystemInDarkTheme
+import androidx.compose.ui.platform.LocalContext
 import com.example.musicfinder.ui.common.BackGround
 import com.example.musicfinder.ui.common.MyTheme
+import com.example.musicfinder.ui.common.setAppLocale
 import com.example.musicfinder.ui.navigation.AppNavigation
 import com.example.musicfinder.ui.theme.MusicFinderTheme
 
@@ -15,7 +17,7 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
-        MyTheme.changeTheme(true)
+        MyTheme.changeTheme(MyTheme.isDarkTheme().value)
         setContent {
             MusicFinderTheme {
                 AppNavigation()

@@ -39,6 +39,7 @@ import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import com.example.musicfinder.data.model.AudDResponseModels.Album
 import com.example.musicfinder.data.model.AudDResponseModels.ExternalUrlsXXX
@@ -84,7 +85,7 @@ class DetailedCardSong {
                         fontSize = 20.sp,
                         fontWeight = FontWeight.Bold
                     )
-                    val textCard = listOf("Artist: ", "Album: ", "Release date: ")
+                    val textCard = listOf(stringResource(id = R.string.card_detail_artist), stringResource(id = R.string.card_detail_album), stringResource(id = R.string.card_detail_release_date))
                     val textSong = listOf(song.artist,song.album,song.release_date)
                     for (i in textCard.indices){
                         Divider(

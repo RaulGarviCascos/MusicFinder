@@ -86,6 +86,9 @@ dependencies {
     //Crypto
     implementation("androidx.security:security-crypto:1.1.0-alpha06")
 
+    implementation("com.google.accompanist:accompanist-systemuicontroller:0.30.1")
+
+
 
 
 }

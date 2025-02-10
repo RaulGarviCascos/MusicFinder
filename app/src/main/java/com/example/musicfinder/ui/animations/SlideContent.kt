@@ -27,6 +27,7 @@ fun SlideContent(visible:Boolean, topPadding: PaddingValues, enterDirection: Int
             200*enterDirection
         } + fadeOut()
     ) {
+
         content(topPadding)
     }
 }
