@@ -1,3 +1,14 @@
 <resources>
     <string name="app_name">MusicFinder</string>
+    <string name="listening">Listening...</string>
+    <string name="press_listen">Press to listen</string>
+    <string name="bottom_bar_listen">Listen</string>
+    <string name="bottom_bar_historical">Historical</string>
+    <string name="swap_theme">Dark theme</string>
+    <string name="change_language">Change language</string>
+    <string name="english_language">English</string>
+    <string name="spanish_language">Spanish</string>
+    <string name="card_detail_artist">Artist: </string>
+    <string name="card_detail_album">Album: </string>
+    <string name="card_detail_release_date">Release date: </string>
 </resources>

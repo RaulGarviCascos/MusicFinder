@@ -1,5 +1,6 @@
 package com.example.musicfinder.ui.settings
 
+import android.app.Activity
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -19,6 +20,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material3.Button
+import androidx.compose.material3.Card
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -35,8 +37,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.RectangleShape
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.musicfinder.R
@@ -44,61 +49,80 @@ import com.example.musicfinder.data.model.AudDResponseModels.SongResult
 import com.example.musicfinder.ui.animations.CardAnimation
 import com.example.musicfinder.ui.animations.SlideContent
 import com.example.musicfinder.ui.common.MyTheme
+import com.example.musicfinder.ui.common.setAppLocale
 
 
 @Composable
-fun SettingsMenu( padding:PaddingValues,onClick : () -> Unit) {
+fun SettingsMenu( padding:PaddingValues) {
     val isDarkThemeBoolean = MyTheme.isDarkTheme().collectAsState().value
-    val checked = remember { mutableStateOf(isDarkThemeBoolean) }
-
-    Box(
-        modifier = Modifier.width(150.dp).height(300.dp).background(
-            MaterialTheme.colorScheme.background
-            , shape = RoundedCornerShape(0.dp, 0.dp, 10.dp, 0.dp)
-        ).padding(padding)
+    val isDark = remember { mutableStateOf(isDarkThemeBoolean) }
+    val context = LocalContext.current
+    val activity = context as? Activity
+    val lenguage = context.resources.configuration.locales[0].language
+    val isSpanish = remember{ mutableStateOf(lenguage=="es") }
+    Card(
+        modifier = Modifier.width(300.dp).height(400.dp).padding(top = padding.calculateTopPadding()),
+        shape = RoundedCornerShape(0.dp, 0.dp, 10.dp, 0.dp)
     ) {
             Column(
-                modifier = Modifier.fillMaxSize().padding(start = 30.dp, top = 10.dp)
+                modifier = Modifier.fillMaxSize().padding(start = 30.dp, top = 20.dp)
             ) {
 
-                Text("Dark theme", modifier = Modifier.padding(5.dp))
+                Text(stringResource(id = R.string.swap_theme), modifier = Modifier.padding(5.dp),fontWeight = FontWeight.Bold)
                 Switch(
-                    checked = checked.value,
+                    checked = isDark.value,
                     onCheckedChange = {
-                        checked.value = !checked.value
-                        MyTheme.changeTheme(checked.value)
+                        isDark.value = !isDark.value
+                        MyTheme.changeTheme(isDark.value)
                     },
                     modifier = Modifier.padding(5.dp)
                 )
+
+
+                Text(stringResource(id = R.string.change_language), modifier = Modifier.padding(5.dp),fontWeight = FontWeight.Bold)
+                Row (modifier = Modifier.fillMaxWidth().padding(5.dp), verticalAlignment = Alignment.CenterVertically){
+                    Text(stringResource(id = R.string.english_language), modifier = Modifier.padding(5.dp), textAlign = TextAlign.Center)
+                    Switch(
+                        checked = isSpanish.value,
+                        onCheckedChange = {
+                            isSpanish.value = !isSpanish.value
+                            setAppLocale(context,if(isSpanish.value) "es" else "en")
+                            activity?.let { activity.recreate() }
+                        },
+                        modifier = Modifier.padding(5.dp)
+                    )
+                    Text(stringResource(id = R.string.spanish_language), modifier = Modifier.padding(5.dp))
+                }
+
             }
         }
 
 }
 @Composable
-fun ShowSettingsMenu(isVisible:MutableState<Boolean>,padding:PaddingValues,onClick : () -> Unit){
-    //para que cuando pulse fuera del menu, se quite
+fun ShowSettingsMenu(isVisible:MutableState<Boolean>,padding:PaddingValues){
+
     if(isVisible.value){
         Box(
             modifier = Modifier
                 .fillMaxSize()
-                .background(Color.Black.copy(alpha = 0.8f))
+                .background(Color.Black.copy(alpha = 0.6f))
                 .clickable { isVisible.value = !isVisible.value }
         ) {
 
         }
     }
+
     SlideContent(visible = isVisible.value, topPadding=padding, enterDirection = -1){
-        SettingsMenu(padding,onClick = onClick)
+        SettingsMenu(padding)
     }
 
 
 }
 
 
-//@Preview(showBackground = true)
-//@Composable
-//fun PreviewScreen(){
-//    val checked = remember { mutableStateOf(true) }
-//
-//    SettingsMenu(checked, onClick = {})
-//}
+@Preview(showBackground = true)
+@Composable
+fun PreviewScreen(){
+    val padding = PaddingValues(50.dp)
+    SettingsMenu(padding)
+}

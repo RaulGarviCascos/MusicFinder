@@ -65,7 +65,6 @@ import com.example.musicfinder.ui.historical.DetailedCardSong
 import com.example.musicfinder.ui.record.RecordAudio
 import com.example.musicfinder.ui.record.RecordAudioWrapper
 import com.example.musicfinder.ui.record.RecordButton
-import com.example.musicfinder.ui.settings.SettingsMenu
 import com.example.musicfinder.ui.settings.ShowSettingsMenu
 import kotlinx.coroutines.delay
 
@@ -118,7 +117,7 @@ fun MainScreen() {
                 ) {
                     HistoricalBody(it)
                 }
-                ShowSettingsMenu(menuSettings,topPadding,onClick = {menuSettings.value = !menuSettings.value})
+                ShowSettingsMenu(menuSettings,topPadding)
 
 
 
