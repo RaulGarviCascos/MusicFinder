@@ -49,7 +49,6 @@ fun LoginNewAPIToken(
 ) {
 
     val context = LocalContext.current
-
     var password = rememberSaveable { mutableStateOf("") }
     var reset_token = remember { mutableStateOf(false) }
     val message = stringResource(id=R.string.saved_token_advise)

@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
@@ -29,10 +30,15 @@ import com.example.musicfinder.ui.historical.DetailedCardSong
 import com.example.musicfinder.ui.record.RecordAudio
 import com.example.musicfinder.ui.record.RecordAudioWrapper
 import com.example.musicfinder.ui.record.RecordButton
+import kotlinx.coroutines.CoroutineScope
 
 
 @Composable
-fun HomeBody(topPadding : PaddingValues) {
+fun HomeBody(
+    topPadding: PaddingValues,
+    snackbarHostState: SnackbarHostState,
+    coroutineScope: CoroutineScope
+) {
     val listening = remember { mutableStateOf(false) }
     val permissionGranted = remember { mutableStateOf(false) }
     val context = LocalContext.current
@@ -54,14 +60,11 @@ fun HomeBody(topPadding : PaddingValues) {
     }else{
         stringResource(id = R.string.press_listen)
     }
-
-
     Box(
         modifier = Modifier
             .fillMaxSize()
             .padding(topPadding),
     ) {
-
         if (song.value!=null && songIsShowing.value){
             val emptySong = SongResult(
                 album = null,
@@ -86,17 +89,14 @@ fun HomeBody(topPadding : PaddingValues) {
                 verticalArrangement = Arrangement.Center
             )
             {
-
                 RecordButton(onClick = {
                     listening.value = !listening.value
                     justPressed.value = true
                 })
-
                 if (justPressed.value) {
-                    RecordAudio.onRecord(listening, fileName = fileName, context, song)
+                    RecordAudio.OnRecord(listening, fileName = fileName, context, song,snackbarHostState,coroutineScope)
                     justPressed.value = false
                 }
-
                 Text(
                     text = listenText,
                     style = TextStyle(

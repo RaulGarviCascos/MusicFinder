@@ -16,4 +16,5 @@
     <string name="reset_token_button">Reset token</string>
     <string name="save_new_token">Save</string>
     <string name="saved_token_advise">Token saved</string>
+    <string name="no_song_finded">The song could not be found</string>
 </resources>

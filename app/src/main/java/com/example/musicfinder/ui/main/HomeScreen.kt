@@ -60,7 +60,7 @@ fun MainScreen() {
                     topPadding = topPadding,
                     enterDirection = -1
                 ) {
-                    HomeBody(it)
+                    HomeBody(it,snackbarHostState,coroutineScope)
                 }
 
                 SlideContent(
