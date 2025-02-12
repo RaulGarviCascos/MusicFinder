@@ -52,7 +52,13 @@ fun TopBar(menuIsVisible:MutableState<Boolean>,menuLogin:MutableState<Boolean>) 
                 }
             },
             navigationIcon = {
-                IconButton(onClick = { if(!menuLogin.value) menuIsVisible.value = !menuIsVisible.value }) {
+                IconButton(onClick = {
+                    if(!menuLogin.value) menuIsVisible.value = !menuIsVisible.value
+                    else{
+                        menuIsVisible.value = !menuIsVisible.value
+                        menuLogin.value = !menuLogin.value
+                    }
+                }) {
                     Icon(
                         imageVector = if (menuIsVisible.value) Icons.Filled.ArrowBack else Icons.Filled.Menu,
                         contentDescription = "Menu Settings",
@@ -60,7 +66,13 @@ fun TopBar(menuIsVisible:MutableState<Boolean>,menuLogin:MutableState<Boolean>) 
                 }
             },
             actions = {
-                IconButton(onClick = { if(!menuIsVisible.value) menuLogin.value = !menuLogin.value }) {
+                IconButton(onClick = {
+                    if(!menuIsVisible.value) menuLogin.value = !menuLogin.value
+                    else{
+                        menuIsVisible.value = !menuIsVisible.value
+                        menuLogin.value = !menuLogin.value
+                    }
+                }) {
                     Icon(
                         imageVector = if(menuLogin.value) Icons.Filled.ArrowForward else Icons.Filled.Person,
                         contentDescription = "Menu Login"

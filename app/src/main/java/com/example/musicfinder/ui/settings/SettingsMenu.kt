@@ -21,6 +21,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
+import androidx.compose.material3.Divider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -78,7 +79,11 @@ fun SettingsMenu( padding:PaddingValues) {
                     modifier = Modifier.padding(5.dp)
                 )
 
-
+                Divider(
+                    color = Color.Gray,
+                    thickness = 1.dp,
+                    modifier = Modifier.padding(end = 30.dp, top = 5.dp, bottom = 5.dp)
+                )
                 Text(stringResource(id = R.string.change_language), modifier = Modifier.padding(5.dp),fontWeight = FontWeight.Bold)
                 Row (modifier = Modifier.fillMaxWidth().padding(5.dp), verticalAlignment = Alignment.CenterVertically){
                     Text(stringResource(id = R.string.english_language), modifier = Modifier.padding(5.dp), textAlign = TextAlign.Center)

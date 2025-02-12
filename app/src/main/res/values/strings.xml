@@ -12,4 +12,8 @@
     <string name="card_detail_album">Album: </string>
     <string name="card_detail_release_date">Release date: </string>
     <string name="login_api">New API token</string>
+    <string name="have_token">You already have a token</string>
+    <string name="reset_token_button">Reset token</string>
+    <string name="save_new_token">Save</string>
+    <string name="saved_token_advise">Token saved</string>
 </resources>

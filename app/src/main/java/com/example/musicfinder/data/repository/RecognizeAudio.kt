@@ -60,6 +60,13 @@ object RecognizeAudio {
             EncryptedSharedPreferences.PrefValueEncryptionScheme.AES256_GCM
         )
     }
+    fun saveSecurePreference(context: Context, key: String, value: String) {
+        val sharedPreferences = getSecurePreferences(context)
+        sharedPreferences.edit().apply {
+            putString(key, value)
+            apply()
+        }
+    }
 
 }
 
