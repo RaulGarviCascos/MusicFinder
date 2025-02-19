@@ -75,6 +75,7 @@ Si tienes preguntas o sugerencias, puedes escribirme en [GitHub](https://github.
 ---
 # DEMO
 
-[![Watch the video]🎥](https://youtu.be/MLTJZJ94LMA?si=MKXs4AoqrlcLzHO9)
+[🎥 Ver video de demostración](app/src/main/res/raw/video_demo_app.mp4)
+
 
 
