@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.filled.ArrowForward
 import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -26,7 +27,7 @@ import androidx.compose.ui.unit.sp
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun TopBar(menuIsVisible:MutableState<Boolean>) {
+fun TopBar(menuIsVisible:MutableState<Boolean>,menuLogin:MutableState<Boolean>) {
     Box(
         modifier = Modifier
             .fillMaxWidth()
@@ -51,28 +52,30 @@ fun TopBar(menuIsVisible:MutableState<Boolean>) {
                 }
             },
             navigationIcon = {
-                IconButton(onClick = {menuIsVisible.value = !menuIsVisible.value }) {
-                    if(menuIsVisible.value){
-                        Icon(
-                            imageVector = Icons.Filled.ArrowBack,
-                            contentDescription = "Return",
-
-                        )
-                    }else{
-                        Icon(
-                            imageVector = Icons.Filled.Menu,
-                            contentDescription = "Menu Icon"
-                        )
+                IconButton(onClick = {
+                    if(!menuLogin.value) menuIsVisible.value = !menuIsVisible.value
+                    else{
+                        menuIsVisible.value = !menuIsVisible.value
+                        menuLogin.value = !menuLogin.value
                     }
-
+                }) {
+                    Icon(
+                        imageVector = if (menuIsVisible.value) Icons.Filled.ArrowBack else Icons.Filled.Menu,
+                        contentDescription = "Menu Settings",
+                    )
                 }
             },
             actions = {
-                IconButton(onClick = { }) {
+                IconButton(onClick = {
+                    if(!menuIsVisible.value) menuLogin.value = !menuLogin.value
+                    else{
+                        menuIsVisible.value = !menuIsVisible.value
+                        menuLogin.value = !menuLogin.value
+                    }
+                }) {
                     Icon(
-                        imageVector = Icons.Filled.Person,
-                        contentDescription = "Avatar Icon",
-
+                        imageVector = if(menuLogin.value) Icons.Filled.ArrowForward else Icons.Filled.Person,
+                        contentDescription = "Menu Login"
                     )
                 }
             }, modifier = Modifier.fillMaxWidth()
