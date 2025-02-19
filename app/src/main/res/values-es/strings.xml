@@ -1,0 +1,20 @@
+<resources>
+    <string name="app_name">MusicFinder</string>
+    <string name="listening">Escuchando...</string>
+    <string name="press_listen">Pulsa para escuchar</string>
+    <string name="bottom_bar_listen">Escuchar</string>
+    <string name="bottom_bar_historical">Historico</string>
+    <string name="swap_theme">Tema oscuro</string>
+    <string name="change_language">Cambiar lenguaje</string>
+    <string name="english_language">Inglés</string>
+    <string name="spanish_language">Español</string>
+    <string name="card_detail_artist">Artista: </string>
+    <string name="card_detail_album">Álbum: </string>
+    <string name="card_detail_release_date">Fecha de salida: </string>
+    <string name="login_api">Nuevo token de la API</string>
+    <string name="have_token">Ya tienes token</string>
+    <string name="reset_token_button">Reiniciar token</string>
+    <string name="save_new_token">Guardar</string>
+    <string name="saved_token_advise">Token guardado</string>
+    <string name="no_song_finded">No se ha podido encontrar la canción</string>
+</resources>
