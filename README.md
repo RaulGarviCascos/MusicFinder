@@ -29,7 +29,20 @@ MusicFinder es una aplicación móvil para Android que permite reconocer cancion
 
 ## 📸 Capturas de pantalla
 
-![main_page](app/src/main/res/screenshots/Screenshot_1.jpg)
+### Pantalla Principal
+<img src="app/src/main/res/screenshots/Screenshot_1.jpg" width="500">
+
+### Pantalla historico
+<img src="app/src/main/res/screenshots/Screenshot_3.jpg" width="400">
+
+### Resultado del reconocimiento
+<img src="app/src/main/res/screenshots/Screenshot_3.jpg" width="400">
+
+### Menu settings
+<img src="app/src/main/res/screenshots/Screenshot_4.jpg" width="400">
+
+### Menu cambiar api
+<img src="app/src/main/res/screenshots/Screenshot_5.jpg" width="400">
 
 ---
 
