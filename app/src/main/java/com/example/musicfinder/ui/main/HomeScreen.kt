@@ -87,7 +87,7 @@ fun MainScreen() {
                 onClickHistorical = {
                     isHistorical.value = true
                     isListen.value = false
-                }
+                }, modifier = Modifier.navigationBarsPadding()
             )
         }
     )

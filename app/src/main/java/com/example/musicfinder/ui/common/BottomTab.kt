@@ -46,10 +46,10 @@ fun BottomTabNavigation(isListen:Boolean,isList:Boolean,navController: NavContro
 
 }
 @Composable
-fun BottomTab(isListen:Boolean,isList:Boolean,onClickListen :()-> Unit,onClickHistorical:() -> Unit) {
+fun BottomTab(isListen:Boolean,isList:Boolean,onClickListen :()-> Unit,onClickHistorical:() -> Unit,modifier: Modifier) {
 
     Box(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxWidth()
             .background(MaterialTheme.colorScheme.background)
     ) {
@@ -63,11 +63,5 @@ fun BottomTab(isListen:Boolean,isList:Boolean,onClickListen :()-> Unit,onClickHi
         }
     }
 
-}
-
-@Preview(showBackground = true)
-@Composable
-fun PreviewTab(){
-   BottomTab(isListen = true,isList = false, onClickListen = {}, onClickHistorical = {})
 }
 
