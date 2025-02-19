@@ -78,8 +78,11 @@ fun HomeBody(
             )
             val detailedCard = DetailedCardSong()
             detailedCard.showDetailCard(song= song.value?:emptySong,songIsShowing)
+
         }else{
             ListeningAnimation(listening.value)
+            songIsShowing.value=true
+            song.value=null
             Column(
                 modifier = Modifier
                     .fillMaxSize()
