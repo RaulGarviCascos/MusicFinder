@@ -75,10 +75,7 @@ Si tienes preguntas o sugerencias, puedes escribirme en [GitHub](https://github.
 ---
 # DEMO
 
-<video controls>
-  <source src="https://www.youtube.com/watch?v=MLTJZJ94LMA&ab_channel=RaulGarviCascos" type="video/mp4">
-  Tu navegador no soporta la reproducción de video.
-</video>
+[🎥 Ver video de demostración](app/src/main/res/raw/video_demo_app.mp4)
 
 
 
