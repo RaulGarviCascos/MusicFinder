@@ -2,18 +2,14 @@ package com.example.musicfinder.data.repository
 
 import android.content.Context
 import android.content.SharedPreferences
+import androidx.security.crypto.EncryptedSharedPreferences
+import androidx.security.crypto.MasterKeys
+import com.example.musicfinder.data.model.AudDResponseModels.SongResult
 import com.example.musicfinder.data.network.ApiClient
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import java.io.File
-import androidx.security.crypto.EncryptedSharedPreferences
-import androidx.security.crypto.MasterKeys
-import com.example.musicfinder.data.model.AudDResponseModels.SongResult
-import kotlinx.coroutines.withContext
 
 object RecognizeAudio {
 

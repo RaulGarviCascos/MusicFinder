@@ -50,11 +50,10 @@ import com.example.musicfinder.ui.animations.CardAnimation
 
 
 class DetailedCardSong {
-    var song:SongResult? = null
 
     @Composable
-    fun CreateDetailedCard() {
-        val song = this.song!!
+    fun CreateDetailedCard(song: SongResult) {
+
         val context = LocalContext.current
         ElevatedCard(
             elevation = CardDefaults.cardElevation(
@@ -147,7 +146,7 @@ class DetailedCardSong {
 
     @Composable
     fun showDetailCard(song:SongResult,isVisible: MutableState<Boolean>){
-        this.song=song
+
         if(isVisible.value){
             Box(
                 contentAlignment = Alignment.Center,
@@ -161,7 +160,7 @@ class DetailedCardSong {
 
         }
         CardAnimation(isVisible.value){
-            CreateDetailedCard()
+            CreateDetailedCard(song)
         }
 
     }

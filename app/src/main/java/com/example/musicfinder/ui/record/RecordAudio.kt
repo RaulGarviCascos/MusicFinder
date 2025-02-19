@@ -91,7 +91,7 @@ object RecordAudio  {
             try {
                 prepare()
                 CoroutineScope(Dispatchers.Main).launch {
-                    delay(3500) // 3.5 segundos
+                    delay(4000)
                     stopRecording(
                         fileName,
                         context,
