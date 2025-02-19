@@ -94,7 +94,7 @@ class DetailedCardSong {
                             modifier = Modifier.padding(horizontal = 16.dp, vertical = 5.dp)
                         )
                         Text(
-                            text =textCard[i]+ textSong[i],
+                            text =textCard[i]+" "+textSong[i],
                             modifier = Modifier
                                 .padding(start = 20.dp,5.dp),
                             textAlign = TextAlign.Left,

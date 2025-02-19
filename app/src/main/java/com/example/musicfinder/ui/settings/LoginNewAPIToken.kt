@@ -31,7 +31,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.musicfinder.R
 import com.example.musicfinder.data.repository.RecognizeAudio.getSecurePreferences
@@ -47,7 +46,6 @@ fun LoginNewAPIToken(
     snackbarHostState: SnackbarHostState,
     coroutineScope: CoroutineScope
 ) {
-
     val context = LocalContext.current
     var password = rememberSaveable { mutableStateOf("") }
     var reset_token = remember { mutableStateOf(false) }
@@ -92,12 +90,7 @@ fun LoginNewAPIToken(
                     },modifier = Modifier.padding(10.dp)) {
                         Text(stringResource(id=R.string.save_new_token))
                     }
-
                 }
-
-
-
-
             }
         }
     }
@@ -110,7 +103,6 @@ fun ShowLogin(
     snackbarHostState: SnackbarHostState,
     coroutineScope: CoroutineScope
 ){
-
     if(isVisible.value){
         Box(
             modifier = Modifier
@@ -121,18 +113,7 @@ fun ShowLogin(
 
         }
     }
-
     SlideContent(visible = isVisible.value, topPadding=padding, enterDirection =1){
         LoginNewAPIToken(padding,snackbarHostState,coroutineScope)
     }
-
-
-}
-
-
-@Preview(showBackground = true)
-@Composable
-fun PreviewLogin(){
-    val padding = PaddingValues(50.dp)
-    //LoginNewAPIToken(padding, snackbarHostState, coroutineScope)
 }

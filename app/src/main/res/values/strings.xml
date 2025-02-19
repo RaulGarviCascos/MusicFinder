@@ -8,7 +8,7 @@
     <string name="change_language">Change language</string>
     <string name="english_language">English</string>
     <string name="spanish_language">Spanish</string>
-    <string name="card_detail_artist">Artist: </string>
+    <string name="card_detail_artist">"Artist: "</string>
     <string name="card_detail_album">Album: </string>
     <string name="card_detail_release_date">Release date: </string>
     <string name="login_api">New API token</string>

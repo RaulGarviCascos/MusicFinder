@@ -51,7 +51,6 @@ fun HomeBody(
     val song = remember { mutableStateOf<SongResult?>(null) }
     val songIsShowing = remember { mutableStateOf(true) }
 
-    // Solicitar permisos antes de interactuar
     RecordAudioWrapper(permissions) {
         permissionGranted.value = true
     }
