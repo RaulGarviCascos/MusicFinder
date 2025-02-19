@@ -1,14 +1,9 @@
 package com.example.musicfinder.ui.main
-
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
-import androidx.compose.foundation.isSystemInDarkTheme
-import androidx.compose.ui.platform.LocalContext
-import com.example.musicfinder.ui.common.BackGround
 import com.example.musicfinder.ui.common.MyTheme
-import com.example.musicfinder.ui.common.setAppLocale
 import com.example.musicfinder.ui.navigation.AppNavigation
 import com.example.musicfinder.ui.theme.MusicFinderTheme
 

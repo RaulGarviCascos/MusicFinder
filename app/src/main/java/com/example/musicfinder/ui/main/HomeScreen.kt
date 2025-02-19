@@ -46,7 +46,7 @@ fun MainScreen() {
                                 if (dragAmount > 15) {
                                     isListen.value = true
                                     isHistorical.value = false
-                                } else if (dragAmount < -15) { 
+                                } else if (dragAmount < -15) {
                                     isListen.value = false
                                     isHistorical.value = true
                                 }
@@ -87,7 +87,7 @@ fun MainScreen() {
                 onClickHistorical = {
                     isHistorical.value = true
                     isListen.value = false
-                }
+                }, modifier = Modifier.navigationBarsPadding()
             )
         }
     )

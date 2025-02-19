@@ -1,10 +1,7 @@
 package com.example.musicfinder.ui.historical
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -22,12 +19,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-
-import com.example.musicfinder.data.model.Song
 import coil3.compose.AsyncImagePainter
 import coil3.compose.rememberAsyncImagePainter
 import com.example.musicfinder.R
@@ -107,15 +100,4 @@ fun ImageFromUrlSafe(url: String?,size: Int) {
         }
     }
 }
-
-//@Preview(showBackground = true)
-//@Composable
-//fun PreviewTab(){
-//    var song = Song( title = "Warriors",artist="Imagine Dragons",album="Warriors",url_image="https://i.scdn.co/image/b039549954758689330893bd4a92585092a81cf5",url_spotify="https://open.spotify.com/artist/53XhwfbYqKCa1cC15pYq2q")
-//    ListCardSong(
-//        song.copy(
-//            url_image = "" // Deja vacío para usar el marcador de posición en el Preview
-//        ),R.drawable.ic_placeholder_image
-//    )
-//}
 
